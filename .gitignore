@@ -1,0 +1,23 @@
+# Secrets never live here: keys are in ~/.local/state/barkeep-arc/ (mode 600).
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# Node
+node_modules/
+dist/
+*.log
+
+# graphify: the report is copied to docs/GRAPH_REPORT.md; the rest is regenerated
+graphify-out/
+
+.DS_Store
+.vscode/*
+.idea
