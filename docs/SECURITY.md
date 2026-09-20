@@ -90,7 +90,7 @@ Smaller points it raised and I took: bare `expectRevert()` calls now name their 
 
 ## Graph review
 
-graphify has no Solidity parser. It found 4 files in this repository on its own. The 11 `.sol` files went through its semantic pass instead, read by a model and asked for one node per function, check, event and error, `calls` edges only where a line could be cited, and `references` edges from each test to what it exercises. So the contract part of this graph is a careful reading, not an AST, and should be trusted accordingly. The report is [GRAPH_REPORT.md](GRAPH_REPORT.md): 292 nodes, 865 edges (721 extracted, 138 inferred), 10 communities. The numbers are from the first run; the report was refreshed with `--update` after the fixes below and after the code review.
+graphify has no Solidity parser. It found 4 files in this repository on its own. The 11 `.sol` files went through its semantic pass instead, read by a model and asked for one node per function, check, event and error, `calls` edges only where a line could be cited, and `references` edges from each test to what it exercises. So the contract part of this graph is a careful reading, not an AST, and should be trusted accordingly. The report is [GRAPH_REPORT.md](GRAPH_REPORT.md). The first run gave 292 nodes and 865 edges; the findings below come from it. After those fixes and the code review the graph was updated (11 changed files re-read): 324 nodes, 1,105 edges, 8 communities. On the updated graph the same query finds no node under `contracts/src/` without an edge from a test, and the only dangling edges are still the mutation script's standard-library imports.
 
 What it flagged and what was done:
 
