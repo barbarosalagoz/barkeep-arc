@@ -29,8 +29,9 @@ MUTANTS = [
     ("any payee", "        if (!_isPayee(t.payees, to)) return REFUSED;\n", ""),
     ("anyone can close", "        if (msg.sender != t.owner) revert NotOwner();\n", ""),
     ("close does not mark closed", "        closed = true;\n", ""),
-    ("close keeps the money", "        bool sent = USDC.transfer(t.owner, amount);\n", "        bool sent = true;\n"),
-    ("close ignores a failed transfer", "        if (!sent) revert TransferFailed();\n", "        sent;\n"),
+    ("close keeps the money", "        try USDC.transfer(t.owner, amount) returns (bool ok) {", "        try USDC.transfer(t.owner, 0) returns (bool ok) {"),
+    ("a failed sweep undoes the close", "        } catch {}\n", "        } catch {\n            revert NotOwner();\n        }\n"),
+    ("close reports swept when it was not", "            swept = ok;\n", "            swept = true;\n"),
     ("digest names the wrong sender", "abi.encode(TRANSFER_WITH_AUTHORIZATION_TYPEHASH, address(this), to,", "abi.encode(TRANSFER_WITH_AUTHORIZATION_TYPEHASH, SELF, to,"),
 ]
 
@@ -48,26 +49,44 @@ FACTORY_MUTANTS = [
 ]
 ALL = [(TAB, *m) for m in MUTANTS] + [(FACTORY, *m) for m in FACTORY_MUTANTS]
 
-survivors = []
+def run_suite():
+    run = subprocess.run(["arc-forge", "test", "--fork-url", FORK], capture_output=True, text=True)
+    out = run.stdout + run.stderr
+    failed = sorted(
+        set(re.findall(r"^\[FAIL[^\n]*?\] (\w+)\(", out, re.M)) | set(re.findall(r"^\s+(invariant_\w+)\(\) \(runs", out, re.M))
+    )
+    passed = re.search(r"(\d+) tests passed, 0 failed", out)
+    return run.returncode, out, failed, int(passed.group(1)) if passed else 0
+
+
+# A kill only means something if the untouched suite passes here, against this fork URL. Without this, a dead
+# arc-anvil or a bad RPC makes every mutant look killed.
+code, out, failed, passed = run_suite()
+if code != 0 or passed == 0:
+    print(f"baseline is not green against {FORK} (exit {code}, {passed} passed, failing: {failed}); nothing was mutated")
+    print(out[-1500:])
+    sys.exit(2)
+print(f"baseline  {passed} tests pass against {FORK}")
+
+survivors, inconclusive = [], []
 try:
     for path, name, old, new in ALL:
         assert ORIGINALS[path].count(old) == 1, f"mutant '{name}' no longer matches {path.name} exactly once"
         path.write_text(ORIGINALS[path].replace(old, new))
-        run = subprocess.run(["arc-forge", "test", "--fork-url", FORK], capture_output=True, text=True)
-        out = run.stdout + run.stderr
-        failed = sorted(set(re.findall(r"^\[FAIL[^\n]*?\] (\w+)\(", out, re.M)) | set(re.findall(r"^\s+(invariant_\w+)\(\) \(runs", out, re.M)))
-        compiled = "Compiler run failed" not in out
-        if run.returncode == 0:
+        code, out, failed, _ = run_suite()
+        if code == 0:
             survivors.append(name)
             print(f"SURVIVED  {name}")
-        elif not compiled:
-            print(f"n/a       {name}: does not compile")
-        else:
+        elif failed:
             print(f"killed    {name}: {len(failed)} failing, e.g. {', '.join(failed[:3])}")
+        else:
+            # Non-zero exit with no failing test named: a compile error, a dead node, an RPC hiccup. Not a kill.
+            inconclusive.append(name)
+            print(f"UNCLEAR   {name}: suite exited {code} without naming a failing test")
         path.write_text(ORIGINALS[path])
 finally:
     for path, text in ORIGINALS.items():
         path.write_text(text)
 
-print(f"\n{len(ALL) - len(survivors)}/{len(ALL)} mutants killed")
-sys.exit(1 if survivors else 0)
+print(f"\n{len(ALL) - len(survivors) - len(inconclusive)}/{len(ALL)} mutants killed, {len(survivors)} survived, {len(inconclusive)} unclear")
+sys.exit(1 if survivors or inconclusive else 0)

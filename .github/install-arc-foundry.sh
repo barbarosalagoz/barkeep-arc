@@ -3,6 +3,9 @@
 # https://github.com/circlefin/arc-foundry -- it is not available through foundryup.
 set -euo pipefail
 
+# The macOS build links libusb dynamically; make sure the Linux one finds it too.
+sudo apt-get update -qq && sudo apt-get install -y -qq libusb-1.0-0 >/dev/null
+
 version="${ARC_FOUNDRY_VERSION:?}"
 expected="${ARC_FOUNDRY_SHA256:?}"
 archive="arc-foundry-${version}-x86_64-unknown-linux-gnu.tar.gz"

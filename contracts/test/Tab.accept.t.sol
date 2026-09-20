@@ -55,9 +55,33 @@ contract TabAcceptTest is Base {
         Auth memory extra = _auth(payeeA, 1);
         bytes memory sig = _sign(agentKey, tab, extra);
         assertEq(tab.isValidSignature(_transferDigest(address(tab), extra), sig), MAGIC);
-        vm.expectRevert();
+        vm.expectRevert(bytes("ERC20: transfer amount exceeds balance"));
         _settle(tab, extra, sig);
         assertEq(USDC.balanceOf(payeeA), CAP);
+    }
+
+    /// Harmless and allowed: it burns a nonce and moves nothing.
+    function test_a_zero_value_payment_to_a_payee_is_accepted_and_moves_nothing() public {
+        Auth memory a = _auth(payeeA, 0);
+        _settle(tab, a, _sign(agentKey, tab, a));
+        assertEq(USDC.balanceOf(payeeA), 0);
+        assertEq(USDC.balanceOf(address(tab)), CAP);
+        assertTrue(USDC.authorizationState(address(tab), a.nonce));
+    }
+
+    /// validAfter is USDC's to enforce, not the tab's: the tab says yes, USDC says not yet.
+    function test_a_post_dated_authorization_waits_for_usdc_not_the_tab() public {
+        Auth memory a = _auth(payeeA, 1);
+        a.validAfter = block.timestamp + 1 hours;
+        bytes memory sig = _sign(agentKey, tab, a);
+        assertEq(tab.isValidSignature(_transferDigest(address(tab), a), sig), MAGIC);
+
+        vm.expectRevert(bytes("FiatTokenV2: authorization is not yet valid"));
+        _settle(tab, a, sig);
+
+        vm.warp(block.timestamp + 1 hours + 1);
+        _settle(tab, a, sig);
+        assertEq(USDC.balanceOf(payeeA), 1);
     }
 
     function test_getters_read_back_what_was_decided() public view {

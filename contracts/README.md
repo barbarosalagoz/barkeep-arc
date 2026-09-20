@@ -2,7 +2,7 @@
 
 # Contracts
 
-`src/Tab.sol` (the tab), `src/TabFactory.sol` (opens and funds tabs), `src/IUSDC.sol` (the three USDC calls they make). 317 lines together. Dependencies: OpenZeppelin Contracts v5.7.0 (`Clones`, `ECDSA`, `IERC1271`) and forge-std v1.16.2, both git submodules pinned to a tag.
+`src/Tab.sol` (the tab), `src/TabFactory.sol` (opens and funds tabs), `src/IUSDC.sol` (the three USDC calls they make). 320 lines together. Dependencies: OpenZeppelin Contracts v5.7.0 (`Clones`, `ECDSA`, `IERC1271`) and forge-std v1.16.2, both git submodules pinned to a tag.
 
 ## Arc Foundry, not Foundry
 
@@ -15,8 +15,8 @@ Install [Arc Foundry](https://github.com/circlefin/arc-foundry) v0.8.0-1 as `arc
 ```shell
 arc-anvil --network arc --port 8555 &
 cd contracts
-arc-forge test --fork-url http://127.0.0.1:8555      # 68 tests: unit, fuzz, invariant
-python3 script/mutation-check.py                     # removes each security check in turn; every mutant must die
+arc-forge test --fork-url http://127.0.0.1:8555      # 71 tests: unit, fuzz, invariant
+python3 script/mutation-check.py                     # needs a green baseline, then removes each check in turn: 25 of 25 must die
 ```
 
 The same suite runs unchanged against a fork of a live network. Forking sends nothing:

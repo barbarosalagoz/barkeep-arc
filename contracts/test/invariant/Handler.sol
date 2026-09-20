@@ -43,6 +43,7 @@ contract Handler is Test {
     uint256 public donationAttempts;
     uint256 public sweptToOwner;
     uint256 public successes;
+    uint256 public payeeAttemptsWhileOpen;
     uint256 public refusals;
     uint256 public successesAfterExpiry;
     uint256 public successesAfterClose;
@@ -70,6 +71,7 @@ contract Handler is Test {
     /* ---- actions ------------------------------------------------------------- */
 
     function agentPaysPayee(uint256 payeeSeed, uint256 value, uint256 validBeforeSeed) external {
+        if (!tab.closed() && block.timestamp <= expiry && validBeforeSeed % 4 != 3) ++payeeAttemptsWhileOpen;
         _attempt(agentKey, true, payees[payeeSeed % payees.length], true, bound(value, 0, maxPerCall), validBeforeSeed);
     }
 

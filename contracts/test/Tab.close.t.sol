@@ -24,7 +24,7 @@ contract TabCloseTest is Base {
 
         uint256 before = USDC.balanceOf(owner);
         vm.expectEmit(true, false, false, true, address(tab));
-        emit Tab.Closed(owner, CAP - 400_000);
+        emit Tab.Closed(owner, CAP - 400_000, true);
         vm.prank(owner);
         tab.close();
 
@@ -79,15 +79,40 @@ contract TabCloseTest is Base {
         assertEq(USDC.balanceOf(owner), before + CAP);
     }
 
-    /// Real USDC reverts rather than returning false, so this branch needs a mocked return to be reached at all.
-    function test_a_false_return_from_usdc_reverts_the_close_and_leaves_the_tab_open() public {
-        vm.mockCall(address(USDC), abi.encodeWithSelector(USDC.transfer.selector), abi.encode(false));
+    /// Revocation must not depend on the money moving: a blocklisted owner contract, or a paused USDC, would
+    /// otherwise leave the agent live until expiry.
+    function test_close_revokes_the_agent_even_when_usdc_refuses_the_sweep() public {
+        vm.mockCallRevert(
+            address(USDC), abi.encodeWithSelector(USDC.transfer.selector), "Blacklistable: account is blacklisted"
+        );
+        vm.expectEmit(true, false, false, true, address(tab));
+        emit Tab.Closed(owner, CAP, false);
         vm.prank(owner);
-        vm.expectRevert(Tab.TransferFailed.selector);
         tab.close();
         vm.clearMockedCalls();
 
-        assertFalse(tab.closed());
+        assertTrue(tab.closed());
+        assertEq(USDC.balanceOf(address(tab)), CAP);
+        Auth memory a = _auth(payeeA, 1);
+        _expectRefusedOnChain(tab, a, _sign(agentKey, tab, a));
+
+        // Once USDC lets the transfer through, the same call collects.
+        uint256 before = USDC.balanceOf(owner);
+        vm.prank(owner);
+        tab.close();
+        assertEq(USDC.balanceOf(owner), before + CAP);
+    }
+
+    /// Real USDC reverts rather than returns false; a token that returned false is treated the same way.
+    function test_a_false_return_from_usdc_still_closes_and_reports_not_swept() public {
+        vm.mockCall(address(USDC), abi.encodeWithSelector(USDC.transfer.selector), abi.encode(false));
+        vm.expectEmit(true, false, false, true, address(tab));
+        emit Tab.Closed(owner, CAP, false);
+        vm.prank(owner);
+        tab.close();
+        vm.clearMockedCalls();
+
+        assertTrue(tab.closed());
         assertEq(USDC.balanceOf(address(tab)), CAP);
     }
 }

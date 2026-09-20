@@ -66,9 +66,17 @@ contract TabInvariantTest is TabInvariantBase {
         assertLe(handler.paidToPayees(), CAP);
     }
 
-    /// Guards against a vacuous run: the handler must actually get payments through.
+    /// Guards against a vacuous run: over a full campaign the handler must see both outcomes.
     function invariant_the_run_is_not_vacuous() public view {
         if (handler.successes() + handler.refusals() > 40) assertGt(handler.refusals(), 0);
+    }
+
+    /// Runs once after each campaign. With agentPaysPayee among eight actions and a day to expiry, a 64-call run
+    /// that never lands a payment means the handler is broken, not unlucky -- unless the owner closed first.
+    function afterInvariant() public view {
+        if (!tab.closed() && block.timestamp <= expiry && handler.payeeAttemptsWhileOpen() > 3) {
+            assertGt(handler.successes(), 0, "no payment ever landed");
+        }
     }
 }
 

@@ -76,11 +76,11 @@ contract Tab is IERC1271 {
         address[] payees;
     }
 
-    event Closed(address indexed owner, uint256 swept);
+    /// `swept` is false when USDC refused the transfer: the tab is closed, the money is still in it.
+    event Closed(address indexed owner, uint256 amount, bool swept);
 
     error NotATab();
     error NotOwner();
-    error TransferFailed();
 
     /* ---- what the human decided, read back from the clone's bytecode -------- */
 
@@ -156,9 +156,14 @@ contract Tab is IERC1271 {
     /* ---- the owner's one power ---------------------------------------------- */
 
     /**
-     * Closes the tab for good and sends whatever USDC is left to the owner. It
-     * can be called again later: that only sweeps anything a third party sent in
-     * after the close, which the agent could never have spent anyway.
+     * Closes the tab for good and sends whatever USDC is left to the owner.
+     *
+     * Revoking the agent must not depend on the money moving. If USDC refuses the
+     * transfer (the owner is a contract that has been blocklisted, USDC is
+     * paused), the tab is closed all the same, `swept` is false, and close() can
+     * be called again later to collect. Calling it again is also how the owner
+     * collects anything a third party sent in after the close, which the agent
+     * could never have spent anyway.
      */
     function close() external {
         Terms memory t = terms();
@@ -167,10 +172,11 @@ contract Tab is IERC1271 {
         closed = true;
 
         uint256 amount = USDC.balanceOf(address(this));
-        emit Closed(t.owner, amount);
-
-        bool sent = USDC.transfer(t.owner, amount);
-        if (!sent) revert TransferFailed();
+        bool swept = false;
+        try USDC.transfer(t.owner, amount) returns (bool ok) {
+            swept = ok;
+        } catch {}
+        emit Closed(t.owner, amount, swept);
     }
 
     /* ---- internals ---------------------------------------------------------- */

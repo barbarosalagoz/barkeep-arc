@@ -4,7 +4,8 @@ pragma solidity 0.8.30;
 import {Tab} from "../src/Tab.sol";
 import {Base} from "./utils/Base.sol";
 
-/// Every refusal is checked twice: the tab answers 0xffffffff, and USDC, asked to move the money, reverts and moves none.
+/// Where a refusal can be driven through USDC it is checked twice: the tab answers 0xffffffff, and USDC, asked to
+/// move the money, reverts and moves none. The length, chain-id and fuzz cases are checked on the tab alone.
 contract TabRefuseTest is Base {
     function _refused(Auth memory a, bytes memory sig) internal {
         assertEq(tab.isValidSignature(_transferDigest(address(tab), a), sig), REFUSED);
@@ -42,7 +43,7 @@ contract TabRefuseTest is Base {
         vm.warp(uint256(expiry) + 1);
         assertEq(tab.isValidSignature(_transferDigest(address(tab), a), sig), REFUSED);
         // USDC itself also rejects it as expired, since validBefore <= expiry; either way nothing moves.
-        vm.expectRevert();
+        vm.expectRevert(bytes("FiatTokenV2: authorization is expired"));
         _settle(tab, a, sig);
         assertEq(USDC.balanceOf(address(tab)), CAP);
     }
@@ -154,7 +155,7 @@ contract TabRefuseTest is Base {
         bytes memory sig = _pack(_ecdsa(agentKey, digest), a);
         assertEq(tab.isValidSignature(digest, sig), REFUSED);
 
-        vm.expectRevert();
+        vm.expectRevert(bytes("EIP2612: invalid signature"));
         USDC.permit(address(tab), stranger, CAP, deadline, sig);
         assertEq(USDC.allowance(address(tab), stranger), 0);
     }
@@ -166,7 +167,7 @@ contract TabRefuseTest is Base {
         assertEq(tab.isValidSignature(digest, sig), REFUSED);
 
         vm.prank(payeeA);
-        vm.expectRevert();
+        vm.expectRevert(bytes("FiatTokenV2: invalid signature"));
         USDC.receiveWithAuthorization(address(tab), a.to, a.value, a.validAfter, a.validBefore, a.nonce, sig);
         assertEq(USDC.balanceOf(address(tab)), CAP);
     }
@@ -179,7 +180,8 @@ contract TabRefuseTest is Base {
             )
         );
         bytes memory sig = _pack(_ecdsa(agentKey, digest), a);
-        vm.expectRevert();
+        assertEq(tab.isValidSignature(digest, sig), REFUSED);
+        vm.expectRevert(bytes("FiatTokenV2: invalid signature"));
         USDC.cancelAuthorization(address(tab), a.nonce, sig);
         assertFalse(USDC.authorizationState(address(tab), a.nonce));
     }

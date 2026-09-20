@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity 0.8.30;
 
+import {Errors} from "@openzeppelin/contracts/utils/Errors.sol";
+
 import {MAX_PAYEES, Tab} from "../src/Tab.sol";
 import {TabFactory} from "../src/TabFactory.sol";
 import {Base} from "./utils/Base.sol";
@@ -42,7 +44,7 @@ contract TabFactoryTest is Base {
     function test_the_same_tab_cannot_be_opened_twice() public {
         vm.startPrank(owner);
         USDC.approve(address(factory), CAP);
-        vm.expectRevert();
+        vm.expectRevert(Errors.FailedDeployment.selector);
         factory.openTab(agent, _payees(), MAX_PER_CALL, expiry, CAP, bytes32(0));
         vm.stopPrank();
     }
@@ -62,7 +64,7 @@ contract TabFactoryTest is Base {
         bytes32 salt = bytes32(uint256(8));
         address predicted = factory.predictTab(owner, agent, _payees(), MAX_PER_CALL, expiry, salt);
         vm.prank(owner);
-        vm.expectRevert();
+        vm.expectRevert(bytes("ERC20: transfer amount exceeds allowance"));
         factory.openTab(agent, _payees(), MAX_PER_CALL, expiry, CAP, salt);
         assertEq(predicted.code.length, 0);
     }

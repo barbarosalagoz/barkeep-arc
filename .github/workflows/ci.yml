@@ -72,39 +72,14 @@ jobs:
           PATH="$HOME/as-forge:$PATH" slither .
 
   secret-hygiene:
-    name: No secrets in version control
+    name: No secrets in version control, now or ever
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Assert no secret-bearing files are tracked
+        with:
+          fetch-depth: 0
+      - name: The scanner catches what it should and spares what it should
+        run: python3 .github/secret-scan.py --self-test
+      - name: No secret-bearing file name, private key or mnemonic in the index or in any commit
         # .gitignore is the control; this is the check that it is actually working.
-        run: |
-          set -uo pipefail
-          patterns='^\.env$|^\.env\.|(^|/)keys\.json$|keystore|mnemonic|\.seed$|\.key$|\.pem$|\.p12$|id_rsa|id_ed25519'
-          tracked=$(git ls-files | grep -Ev '^\.env\.example$' | grep -Ei "$patterns" || true)
-          if [ -n "$tracked" ]; then
-            echo "::error::Secret-bearing files are tracked in git:"
-            echo "$tracked"
-            exit 1
-          fi
-          echo "OK - no secret-bearing files tracked."
-      - name: Assert no private key is written into a tracked file
-        # A 32-byte hex value next to a word that says it is a key. Transaction hashes are
-        # 32-byte hex too, so the word is what this looks for, not the hex alone.
-        run: |
-          set -uo pipefail
-          hits=$(git ls-files -z | xargs -0 grep -nIEi '(private[_-]?key|secret|mnemonic|seed)["'"'"' ]*[:=]["'"'"' ]*(0x)?[0-9a-f]{64}' -- 2>/dev/null || true)
-          if [ -n "$hits" ]; then
-            echo "::error::Something that looks like a private key is tracked:"
-            echo "$hits" | cut -c1-120
-            exit 1
-          fi
-          echo "OK - no private key material in tracked files."
-      - name: Assert .env.example carries no values that look real
-        run: |
-          set -uo pipefail
-          if grep -nE '[0-9a-fA-F]{40,}' .env.example; then
-            echo "::error::.env.example contains a long hex value"
-            exit 1
-          fi
-          echo "OK"
+        run: python3 .github/secret-scan.py
