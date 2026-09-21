@@ -2,6 +2,7 @@
 /*
  * barkeep-arc-owner: the only program that uses the owner's key.
  *
+ *   barkeep-arc-owner keygen <name>          make a new key in the key file and print its ADDRESS only
  *   barkeep-arc-owner whoami                 the owner address and its USDC
  *   barkeep-arc-owner list                   tabs waiting to be opened, and open ones
  *   barkeep-arc-owner open <tab_id> [--yes]  show the terms, ask, approve the cap, open the tab
@@ -24,7 +25,7 @@ import { USDC, explorerTx, network } from "../network.ts";
 import { Store } from "../state.ts";
 import { describeExpiry, fromBaseUnits, withUnit } from "../units.ts";
 import { closeTab, deployFactory, describeRequest, openTab } from "./actions.ts";
-import { ownerAccount } from "./keyfile.ts";
+import { generateNamedKey, ownerAccount } from "./keyfile.ts";
 
 const [verb, ...rest] = process.argv.slice(2);
 const yes = rest.includes("--yes");
@@ -45,6 +46,14 @@ const client = createPublicClient({ chain: net.chain, transport: http(net.rpcUrl
 const fee = (gasUsed: bigint, price: bigint) => `${Number(gasUsed * price) / 1e18} USDC in gas`;
 
 switch (verb) {
+  case "keygen": {
+    if (!arg) throw new Error("usage: barkeep-arc-owner keygen <name>, e.g. mainnetOwner");
+    const made = generateNamedKey(arg);
+    // The address and nothing else. The key is in the file and is never printed.
+    console.log(JSON.stringify({ name: arg, address: made.address, file: made.file, mode: "600" }, null, 2));
+    break;
+  }
+
   case "list": {
     for (const t of store.listTabs().filter((t) => t.network === net.name)) {
       console.log(`${t.tabId}  ${t.status.padEnd(9)}  cap ${withUnit(BigInt(t.cap))}  ${t.address ?? "(not opened)"}`);
@@ -102,6 +111,6 @@ switch (verb) {
   }
 
   default:
-    console.error("usage: barkeep-arc-owner whoami | list | open <tab_id> | close <tab_id> | deploy-factory   [--yes]");
+    console.error("usage: barkeep-arc-owner keygen <name> | whoami | list | open <tab_id> | close <tab_id> | deploy-factory   [--yes]");
     process.exit(2);
 }
