@@ -26,14 +26,17 @@ const DEFAULT_KEY_NAME: Record<NetworkName, string> = {
   "arc-mainnet": "mainnetOwner",
 };
 
-export function ownerAccount(net: NetworkName): LocalAccount {
-  const file = process.env.BARKEEP_ARC_KEYS_FILE ?? join(homedir(), ".local", "state", "barkeep-arc", "keys.json");
-  const name = process.env.BARKEEP_ARC_OWNER_KEY_NAME ?? DEFAULT_KEY_NAME[net];
+const keysFile = (): string => process.env.BARKEEP_ARC_KEYS_FILE ?? join(homedir(), ".local", "state", "barkeep-arc", "keys.json");
 
+/** Any named key from the file. For the owner, and for the demo seller, which is nobody's wallet. */
+export function namedAccount(name: string): LocalAccount {
+  const file = keysFile();
   const mode = statSync(file).mode & 0o777;
   if (mode & 0o077) throw new Error(`${file} is readable by others (mode ${mode.toString(8)}); run: chmod 600 ${file}`);
 
   const entry = (JSON.parse(readFileSync(file, "utf8")) as Record<string, { privateKey?: Hex }>)[name];
-  if (!entry?.privateKey) throw new Error(`${file} has no key named "${name}" for ${net}`);
+  if (!entry?.privateKey) throw new Error(`${file} has no key named "${name}"`);
   return privateKeyToAccount(entry.privateKey);
 }
+
+export const ownerAccount = (net: NetworkName): LocalAccount => namedAccount(process.env.BARKEEP_ARC_OWNER_KEY_NAME ?? DEFAULT_KEY_NAME[net]);

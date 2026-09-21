@@ -3,3 +3,5 @@ contracts/out/
 contracts/cache/
 node_modules/
 docs/GRAPH_REPORT.md
+deployments/
+package-lock.json

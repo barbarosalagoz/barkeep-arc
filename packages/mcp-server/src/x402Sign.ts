@@ -23,18 +23,25 @@ import type { Tab } from "./state.ts";
 
 /** Seconds kept between an authorization's validBefore and the tab's expiry. */
 const EXPIRY_MARGIN = 5;
-/** How far this machine's clock may trail the chain's before signing is pointless. */
-const MAX_CLOCK_LAG = 30;
+/** How far this machine's clock may differ from the chain's, either way, before nothing is signed. */
+const MAX_CLOCK_SKEW = 30;
 
 export function createSigner(net: Network, keys: AgentKeys) {
   return async function sign(tab: Tab, onChain: OnChainTab, maxAmount: bigint, paymentRequired: PaymentRequired): Promise<SignedPayment> {
     const agent = keys.account(tab.tabId);
     if (agent.address !== onChain.agent) throw new Error(`the key held for ${tab.tabId} is ${agent.address}, but the tab's agent on chain is ${onChain.agent}`);
 
-    // The stock client stamps validBefore from this machine's clock; USDC judges it by the chain's. If this clock is
-    // behind, the authorization arrives already expired, so say that here rather than let it look like a refusal.
-    const behind = onChain.now - Math.floor(Date.now() / 1000);
-    if (behind > MAX_CLOCK_LAG) throw new Error(`this machine's clock is ${behind}s behind ${net.name}'s; fix the clock, an authorization signed now would already be expired`);
+    // The stock client stamps validAfter and validBefore from THIS machine's clock; USDC judges them by the chain's.
+    // Behind the chain, the authorization arrives already expired. Ahead of it, the authorization lives longer than
+    // the seller asked for and the clamp to the tab's expiry below is computed against the wrong clock. Either way
+    // the honest answer is to say so and sign nothing. See docs/findings/08.
+    const skew = Math.floor(Date.now() / 1000) - onChain.now;
+    if (Math.abs(skew) > MAX_CLOCK_SKEW) {
+      throw new Error(
+        `this machine's clock is ${Math.abs(skew)}s ${skew < 0 ? "behind" : "ahead of"} ${net.name}'s (block ${onChain.blockNumber}); ` +
+          `fix the clock. ${skew < 0 ? "An authorization signed now would already be expired" : "An authorization signed now would outlive what the seller asked for"}`
+      );
+    }
 
     const [offer] = paymentRequired.accepts;
     const room = onChain.expiry - onChain.now - EXPIRY_MARGIN;

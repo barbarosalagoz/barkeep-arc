@@ -10,13 +10,13 @@ Unaudited. Testnet work in progress. Nothing here has been deployed to mainnet.
 
 ## Status
 
-Phases 1 and 2 of 5: the contracts, and the MCP server with the owner's command line. Nothing is deployed yet.
+Phases 1 to 3 of 5: the contracts, the MCP server with the owner's command line, and the done-tests on Arc Testnet. Nothing is on mainnet.
 
 | Phase | What | State |
 |---|---|---|
 | 1 | Contracts, Foundry tests, Slither, graph review | done, see [docs/SECURITY.md](docs/SECURITY.md) |
 | 2 | MCP server (`open_tab`, `pay_and_fetch`, `tab_status`, `close_tab`), the Arc adapter, the owner CLI | done, see [packages/mcp-server](packages/mcp-server/README.md) |
-| 3 | Testnet done-tests A1 to A6, hashes in `deployments/arc-testnet.json` | not started |
+| 3 | Testnet done-tests A1 to A8, hashes in `deployments/arc-testnet.json` | done except the seller half of A6, see [docs/TESTNET.md](docs/TESTNET.md) |
 | 4 | README, SECURITY.md, docs | not started |
 | 5 | Mainnet factory, one demo tab, one real payment | not started |
 
@@ -26,7 +26,7 @@ USDC on Arc implements EIP-3009 and, when the payer is a contract, asks that con
 
 Everything the human decided is written into the clone's bytecode when the tab is opened (EIP-1167 with immutable arguments, CREATE2). There is no setter, no initializer and no upgrade path. The only storage is one bit, `closed`.
 
-Whether Circle's x402 facilitator settles a payment from a contract payer with a long signature was tested before any of this was written. On Arc Testnet, its keyless trial verified and settled a payment from a throwaway ERC-1271 contract with a 97-byte signature: [`0x701e4824…740b83`](https://explorer.testnet.arc.io/tx/0x701e48243bc458028fa3bf702da00dbb94692597f3698ff9f72c8f3188740b83). The stock `@x402/evm` facilitator, self-hosted, did the same: [`0x7686f79e…0c2f2c`](https://explorer.testnet.arc.io/tx/0x7686f79ebbfcd80a44d5bf1708c38b520113a2380da1b4a62d878064320c2f2c). The spike's code is in the Stellar repo on branch `arc-1271-spike`, which is not pushed yet. A 213-byte signature from a real tab has not been through a facilitator; that is phase 3.
+Whether Circle's x402 facilitator settles a payment from a contract payer with a long signature was tested before any of this was written. On Arc Testnet, its keyless trial verified and settled a payment from a throwaway ERC-1271 contract with a 97-byte signature: [`0x701e4824…740b83`](https://explorer.testnet.arc.io/tx/0x701e48243bc458028fa3bf702da00dbb94692597f3698ff9f72c8f3188740b83). The stock `@x402/evm` facilitator, self-hosted, did the same: [`0x7686f79e…0c2f2c`](https://explorer.testnet.arc.io/tx/0x7686f79ebbfcd80a44d5bf1708c38b520113a2380da1b4a62d878064320c2f2c). The spike's code is in the Stellar repo on branch `arc-1271-spike`, which is not pushed yet. A real tab's 213-byte signature has since been verified and settled by Circle's facilitator on Testnet: see [docs/TESTNET.md](docs/TESTNET.md), A7.
 
 ## Run the tests
 

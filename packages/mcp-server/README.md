@@ -47,4 +47,4 @@ claude mcp add barkeep-arc --scope local -- "$PWD/packages/mcp-server/bin/barkee
 
 State lives in `~/.local/state/barkeep-arc/mcp/` (`BARKEEP_ARC_STATE_DIR` overrides). The network is `BARKEEP_ARC_NETWORK` (`arc-testnet` by default); the factory comes from `deployments/<network>.json` or `BARKEEP_ARC_FACTORY`.
 
-Not yet done: nothing here has run against Arc Testnet or Circle's facilitator. That is phase 3.
+On Arc Testnet, against Circle's Facilitator Service: `npx tsx packages/mcp-server/scripts/done-tests-testnet.ts`, results in [docs/TESTNET.md](../../docs/TESTNET.md). The demo seller it uses is `src/demo/seller.ts`; it is for tests and takes, not production.
