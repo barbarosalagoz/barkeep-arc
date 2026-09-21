@@ -1,0 +1,8 @@
+#!/bin/sh
+# The owner's command: open, fund and close tabs with the owner key. Run it
+# yourself in a terminal; it is not part of the MCP server. See src/owner/cli.ts.
+set -eu
+here=$(cd "$(dirname "$0")/.." && pwd)
+tsx="$here/../../node_modules/.bin/tsx"
+[ -x "$tsx" ] || { echo "barkeep-arc-owner: $tsx not found; run npm ci at the repo root" >&2; exit 1; }
+exec "$tsx" "$here/src/owner/cli.ts" "$@"

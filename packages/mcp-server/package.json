@@ -1,0 +1,30 @@
+{
+  "name": "@barkeep-arc/mcp",
+  "private": true,
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "bin": {
+    "barkeep-arc-mcp": "./bin/barkeep-arc-mcp",
+    "barkeep-arc-owner": "./bin/barkeep-arc-owner"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run --exclude \"**/*.int.test.ts\"",
+    "test:int": "vitest run test/arc-anvil.int.test.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "@x402/core": "2.25.0",
+    "@x402/evm": "2.25.0",
+    "viem": "2.56.8",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "tsx": "^4.20.0",
+    "typescript": "~6.0.2",
+    "vitest": "^5.0.0"
+  }
+}
