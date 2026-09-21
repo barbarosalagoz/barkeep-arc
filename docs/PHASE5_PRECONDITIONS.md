@@ -158,11 +158,19 @@ From the research pass, quoting the Official Gazette. I have not read these inst
 
 Total cost either way is well under one USDC. What none of this establishes: that the Binance TR screen really offers Arc, Paribu's fee, how each exchange runs the 48 and 72 hour clocks, and whether any bridge completes for a wallet and an IP address in Türkiye.
 
+## Decisions already taken for phase 5
+
+Taken by the repository's owner on 2026-09-21. They narrow what phase 5 is.
+
+**The mainnet demo has no third party in it.** The payer and the seller are both controlled by the repository's owner, as they were on Testnet: the owner's key opens and funds the tab, the agent key is the server's, and the seller is the demo seller in this repository, paid at an address the owner holds the key to. No third-party seller is paid on mainnet until the question under "What Turkish rules add" has been answered by someone qualified. The demo shows that the contracts, the server and the facilitator work on mainnet. It is not the start of a service.
+
+**A Circle Console account is a fallback, not the plan.** The first mainnet settlement is attempted on the keyless trial, which `/verify` has been shown to accept on mainnet (above). A Console account and a `LIVE_API_KEY` are opened only if keyless `/settle` fails there. Which entity would open it, an individual or a company, is undecided; the Developer Terms' "for business purposes only" is part of that decision, and so is the fact that settling with a key binds the `payTo` to the account for good.
+
 ## So, before phase 5
 
-1. Decide whether the demo payment goes keyless or with an API key. Keyless works on mainnet for `/verify`; `/settle` is untested and the allowance is unknown.
-2. If with a key: create the Console account, find out what it requires for a `LIVE_API_KEY`, and only then bind a `payTo`.
+1. The demo payment goes keyless first. Keyless works on mainnet for `/verify`; `/settle` is untested and the allowance is unknown.
+2. Only if keyless `/settle` fails: decide the entity, create the Console account, find out what it requires for a `LIVE_API_KEY`, and only then bind a `payTo`.
 3. Make the first mainnet payment the smallest amount we intend to support, to find the minimum.
-4. Get the payments question under "What Turkish rules add" answered by someone qualified.
+4. Get the payments question under "What Turkish rules add" answered by someone qualified. Until it is, the payer and the seller are both the owner's, and nobody else is paid.
 5. Fund the mainnet owner address as above, and start the waiting period early: it is two or three days.
 6. Keep the fallback in mind: the stock `@x402/evm` facilitator, self-hosted, settled the same signatures on Testnet and needs nothing from Circle but a relayer holding a little USDC for gas.

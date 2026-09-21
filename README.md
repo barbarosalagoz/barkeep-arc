@@ -6,6 +6,8 @@ A tab for an AI agent, on Circle's Arc. You tell Claude Code "spend up to 5 USDC
 
 **Unaudited.** Nobody but the author and the tools listed in [docs/SECURITY.md](docs/SECURITY.md) has reviewed the contracts. It runs on Arc Testnet. Nothing here has been deployed to mainnet. Do not put in a tab more than you are prepared to lose.
 
+**What this is not.** This is infrastructure software. It does not offer a payment service in Türkiye, and it is not proposed as a payment method for merchants there. Whether using it from Türkiye raises a question under Turkish rules on crypto assets in payments is set out, without an opinion, in [docs/PHASE5_PRECONDITIONS.md](docs/PHASE5_PRECONDITIONS.md#what-turkish-rules-add).
+
 It started as [Barkeep](https://github.com/barbarosalagoz/barkeep) on Stellar, where a tab is a rule inside a smart account. This is the same idea rebuilt for Arc's EVM, and the rebuild changed the design: see [how it works](docs/HOW_IT_WORKS.md).
 
 ## What it looks like
