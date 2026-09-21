@@ -20,6 +20,8 @@ Phases 1 to 3 of 5: the contracts, the MCP server with the owner's command line,
 | 4 | README, SECURITY.md, docs | not started |
 | 5 | Mainnet factory, one demo tab, one real payment | not started |
 
+One limit of phase 3, stated plainly. When a payment's outcome is unknown, the buyer's recovery is proven on Testnet: `pay_and_fetch` asked USDC whether its authorization had been used, charged the tab once and collected the resource. The demo seller's own handling of `settlement_pending`, which polls Circle's `/status`, has never run against a real pending answer from Circle in this repository: Circle returned none in 179 Testnet settlements. That branch is covered by a unit test fed with the one real pending answer I have, recorded during the earlier spike (`packages/mcp-server/test/seller.test.ts`). What Circle requires on mainnet is in [docs/PHASE5_PRECONDITIONS.md](docs/PHASE5_PRECONDITIONS.md).
+
 ## How the tab works
 
 USDC on Arc implements EIP-3009 and, when the payer is a contract, asks that contract through ERC-1271 whether the authorization is signed. `Tab.isValidSignature` is the whole product. It receives the agent's signature followed by the fields of the transfer (213 bytes), rebuilds USDC's own EIP-712 digest from those fields, and answers yes only if the digest matches the hash it was handed, the agent signed it, the payee is listed, the value is within the maximum, and neither the clock nor the authorization outlives the expiry. Every other case gets the same `0xffffffff`, with no reason.

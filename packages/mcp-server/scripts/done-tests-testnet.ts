@@ -229,6 +229,8 @@ try {
   const a4Local = await refusal(pay(tab, { url: `${seller.url}/cheap`, max_amount: "0.002", request_id: "after-expiry" }));
   const a4TabAnswer = await tabAnswer(shortOpened.tab, early);
   const a4Revert = await submitExpectingRevert(early);
+  // The agent's side first, as for any tab: without this the expired tab's agent key would be left on disk.
+  await requestClose(store, keys, chain, store.getTab(short.tab_id)!);
   const shortClosed = await closeTab(net, wallet, client as never, store, short.tab_id);
   done("A4", {
     what: "after expiry: refused before signing; the tab answers no to a signature it accepted while open; the submitted transfer reverts; the owner still gets the money back",

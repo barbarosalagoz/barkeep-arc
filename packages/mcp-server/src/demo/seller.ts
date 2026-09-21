@@ -24,6 +24,16 @@ import type { Address, LocalAccount } from "viem";
 import { USDC, USDC_DOMAIN, type Network } from "../network.ts";
 import { circleFacilitator, type CircleAnswer } from "./circle.ts";
 
+/** The three facilitator calls the seller makes. Circle's in production; a scripted one in seller.test.ts. */
+export type Facilitator = ReturnType<typeof circleFacilitator>;
+
+export interface SellerOptions {
+  /** How long to keep asking /status about a pending settlement before giving up (and still not serving). */
+  statusWaitMs?: number;
+  statusPollMs?: number;
+  facilitator?: Facilitator;
+}
+
 export interface SellerLogEntry {
   at: string;
   path: string;
@@ -44,8 +54,10 @@ export interface DemoSeller {
   close: () => void;
 }
 
-export async function startSeller(net: Network, seller: LocalAccount, routes: Record<string, { payTo?: Address; amount: string }>, statusWaitMs = 90_000): Promise<DemoSeller> {
-  const circle = circleFacilitator(seller, net.chainId, net.caip2);
+export async function startSeller(net: Network, seller: LocalAccount, routes: Record<string, { payTo?: Address; amount: string }>, options: SellerOptions = {}): Promise<DemoSeller> {
+  const circle = options.facilitator ?? circleFacilitator(seller, net.chainId, net.caip2);
+  const statusWaitMs = options.statusWaitMs ?? 90_000;
+  const statusPollMs = options.statusPollMs ?? 2_000;
   const paid = new Map<string, string>(); // authorization nonce -> transaction
   const state = { log: [] as SellerLogEntry[], settles: 0, pendingSeen: 0, lose: false };
   let url = "";
@@ -92,14 +104,18 @@ export async function startSeller(net: Network, seller: LocalAccount, routes: Re
         const paymentId = ((settle.body.extensions as Record<string, { paymentId?: string }> | undefined)?.["settlement-status"])?.paymentId;
         const deadline = Date.now() + statusWaitMs;
         while (paymentId && Date.now() < deadline) {
-          await new Promise((r) => setTimeout(r, 2_000));
+          await new Promise((r) => setTimeout(r, statusPollMs));
           const status = await circle.status(paymentId);
           note({ step: "status", answer: status });
           if (status.body.status === "completed") {
             settle = { ...settle, body: { success: true, transaction: status.body.transaction, network: net.caip2, payer: inner.authorization.from } };
             break;
           }
-          if (status.body.status === "failed") break;
+          if (status.body.status === "failed") {
+            // Final, and not a success: say so, rather than leaving the buyer to think it may still settle.
+            settle = { ...settle, body: { success: false, errorReason: `settlement_failed${typeof status.body.reason === "string" ? `: ${status.body.reason}` : ""}` } };
+            break;
+          }
         }
       }
 

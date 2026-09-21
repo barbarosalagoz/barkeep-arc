@@ -1,0 +1,49 @@
+{
+  "provenance": {
+    "what": "Circle Facilitator Service answers, recorded on Arc Testnet on 2026-09-20 during the ERC-1271 spike: the one settlement_pending seen in 180 settlements, and the /status answer that later reported it completed.",
+    "recordedBy": "spikes/arc-1271/trial.mjs and an inline /status call, in the Barkeep (Stellar) repository",
+    "source": "barkeep: deployments/arc-testnet.json, doneTests.circleTrial.stoppedBy (line 1247) and doneTests.circleTrial.pendingReconciled (line 1265)",
+    "sourceIsPublic": false,
+    "sourceNote": "That file is on the unpushed branch arc-1271-spike and has not been committed. These copies are the only published ones.",
+    "fidelity": "HTTP status and the parsed JSON body, exactly as recorded. Response headers were not recorded. Key order is the recorder's, not necessarily Circle's.",
+    "onChain": {
+      "status": "success",
+      "block": 63097935,
+      "explorer": "https://explorer.testnet.arc.io/tx/0x503e92a74c7c056704c9f8e4cb1b530f2496c5c0a772739599cbf188cf3f62b5"
+    },
+    "payerWasA": "throwaway ERC-1271 contract with a 65-byte signature, not a Barkeep tab"
+  },
+  "settlePending": {
+    "httpStatus": 200,
+    "body": {
+      "success": false,
+      "errorReason": "settlement_pending",
+      "payer": "0xc8fa58b7c4e423feee01361be0eb8396f593d544",
+      "transaction": "",
+      "network": "eip155:5042002",
+      "extensions": {
+        "settlement-status": {
+          "status": "pending",
+          "paymentId": "72ef4b26-4f82-405a-a01b-bcc5f3964fc7",
+          "statusUrl": "https://api.circle.com/v1/facilitator/x402/status/72ef4b26-4f82-405a-a01b-bcc5f3964fc7"
+        }
+      }
+    }
+  },
+  "statusCompleted": {
+    "httpStatus": 200,
+    "body": {
+      "paymentId": "72ef4b26-4f82-405a-a01b-bcc5f3964fc7",
+      "status": "completed",
+      "reason": null,
+      "transaction": "0x503e92a74c7c056704c9f8e4cb1b530f2496c5c0a772739599cbf188cf3f62b5",
+      "network": "eip155:5042002",
+      "amount": "1000",
+      "payer": null,
+      "nextAction": null,
+      "retryAfterMs": null,
+      "expiresAt": null,
+      "updatedAt": "2026-09-20T14:02:08.330368Z"
+    }
+  }
+}
