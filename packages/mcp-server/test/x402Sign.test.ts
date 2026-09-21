@@ -54,10 +54,19 @@ describe("signing with the stock x402 client", () => {
     await expect(t.sign(t.tab, onChainTab(t.agent, { now, expiry: now + 3600, maxPerCall: 999n }), 10_000n, required())).rejects.toThrow();
   });
 
-  it("says so when this machine's clock trails the chain's, instead of signing something already expired", async () => {
+  it.each([
+    [180, /clock is 1[78]\ds behind .* already be expired/],
+    [-180, /clock is 1[78]\ds ahead of .* outlive what the seller asked for/],
+  ])("signs nothing when the chain's clock is %is from this machine's, and says which way", async (chainAhead, message) => {
     const t = setup();
-    const ahead = wallNow() + 180;
-    await expect(t.sign(t.tab, onChainTab(t.agent, { now: ahead, expiry: ahead + 3600 }), 10_000n, required())).rejects.toThrow(/clock is 1[78]\ds behind/);
+    const chainNow = wallNow() + chainAhead;
+    await expect(t.sign(t.tab, onChainTab(t.agent, { now: chainNow, expiry: chainNow + 3600 }), 10_000n, required())).rejects.toThrow(message);
+  });
+
+  it("tolerates the few seconds a real chain and a real machine differ by", async () => {
+    const t = setup();
+    const chainNow = wallNow() - 20;
+    await expect(t.sign(t.tab, onChainTab(t.agent, { now: chainNow, expiry: chainNow + 3600 }), 10_000n, required())).resolves.toBeTruthy();
   });
 
   it("refuses when the key it holds is not the tab's agent", async () => {

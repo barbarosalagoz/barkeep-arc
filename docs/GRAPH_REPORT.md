@@ -1,108 +1,164 @@
-# Graph Report - barkeep-arc  (2026-09-20)
+# Graph Report - barkeep-arc  (2026-09-21)
 
 ## Corpus Check
-- Corpus is ~6,138 words - fits in a single context window. You may not need a graph.
+- Corpus is ~28,005 words - fits in a single context window. You may not need a graph.
 
 ## Summary
-- 324 nodes · 1105 edges · 8 communities
-- Extraction: 84% EXTRACTED · 16% INFERRED · 0% AMBIGUOUS · INFERRED: 175 edges (avg confidence: 0.92)
-- Token cost: 137,257 input · 0 output
+- 619 nodes · 1717 edges · 22 communities (18 shown, 4 thin omitted)
+- Extraction: 86% EXTRACTED · 14% INFERRED · 0% AMBIGUOUS · INFERRED: 246 edges (avg confidence: 0.89)
+- Token cost: 87,754 input · 0 output
 
 ## Community Hubs (Navigation)
+- close(), Revocation & Arc Quirks
+- MCP Tools, Known Limits & Deviations
+- USDC Interface & Test Interface
 - isValidSignature Checks & Refuse Tests
-- Invariant Handler & Ghosts
+- Tooling, Arc Foundry & Mutation Check
 - TabFactory & Opening Checks
-- SECURITY.md: Review & Design
-- Tooling, Arc Foundry & Arc Quirks
-- Tab Terms, Getters & USDC Interface
-- close() & Revocation
-- Test Base & Real USDC Interface
+- Sanity Tests & Native Balance
+- MCP Package Manifest
+- Test Helpers & Pay Tests
+- Tab Terms & Getters
+- ABIs & Chain Adapter
+- Testnet Done-tests Script
+- Demo Seller & Circle Client
+- TypeScript Config
+- Root Package Manifest
+- Owner Key File & CLI
+- Agent Keys & Forced Signing
+- State Store
+- Agent Key & Boundary Tests
+- Arc Foundry Installer
+- MCP Launcher
+- Owner Launcher
 
 ## God Nodes (most connected - your core abstractions)
-1. `Tab.isValidSignature()` - 68 edges
-2. `SECURITY.md (phase 1: contracts)` - 51 edges
-3. `Handler (invariant handler contract)` - 40 edges
-4. `Base._auth()` - 37 edges
-5. `Base._sign()` - 34 edges
-6. `Tab (contract)` - 32 edges
-7. `TabFactory.openTab()` - 31 edges
-8. `Tab.close()` - 29 edges
-9. `Base (abstract test contract)` - 28 edges
-10. `IUSDCFull.balanceOf()` - 27 edges
+1. `Tab.isValidSignature()` - 73 edges
+2. `Handler (invariant handler contract)` - 38 edges
+3. `Base._auth()` - 36 edges
+4. `Tab (contract)` - 34 edges
+5. `TabFactory.openTab()` - 34 edges
+6. `Base._sign()` - 33 edges
+7. `Tab.close()` - 28 edges
+8. `Base (abstract test contract)` - 28 edges
+9. `TabRefuseTest (test contract)` - 26 edges
+10. `AgentKeys` - 25 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `script/mutation-check.py: needs a green baseline, removes each check in turn, 25 of 25 mutants must die` --semantically_similar_to--> `Mutation check: each check in Tab.sol and each validation in TabFactory.sol is deleted in turn; 25 of 25 mutants die; needs a green baseline and a named failing test`  [INFERRED] [semantically similar]
-  contracts/README.md → docs/SECURITY.md
-- `ARC_FOUNDRY_VERSION v0.8.0-1 pinned and SHA-256 checksummed` --semantically_similar_to--> `Arc Foundry (arc-forge / arc-cast / arc-anvil v0.8.0-1), not upstream Foundry`  [INFERRED] [semantically similar]
-  .github/workflows/ci.yml → contracts/README.md
-- `Non-promise: a listed payee can be the agent itself; the contract does not second-guess the list` --references--> `isValidSignature check: to not in payees -> REFUSED`  [INFERRED]
-  docs/SECURITY.md → contracts/src/Tab.sol
-- `Design: the factory does not reject every odd set of terms (duplicate payees, tab as payee, owner == agent, contract agent)` --rationale_for--> `TabFactory.openTab()`  [INFERRED]
-  docs/SECURITY.md → contracts/src/TabFactory.sol
-- `No cumulative counter, on purpose (EIP-3009 nonce burn + digest names the tab as from)` --semantically_similar_to--> `The balance is the limit (one clone per tab, funded with exactly the cap)`  [INFERRED] [semantically similar]
-  docs/SECURITY.md → README.md
+- `The keys are the biggest problem (separation by process, not OS)` --references--> `AgentKeys`  [INFERRED]
+  docs/SECURITY.md → packages/mcp-server/src/agentKeys.ts
+- `Done-test A5: owner closes, agent tries again` --references--> `AgentKeys`  [INFERRED]
+  docs/TESTNET.md → packages/mcp-server/src/agentKeys.ts
+- `deployFactory()` --implements--> `TabFactory on Arc Testnet at 0xd7c3e010...ba9ed`  [INFERRED]
+  packages/mcp-server/src/owner/actions.ts → docs/TESTNET.md
+- `Done-test A1: open, fund, agent pays an allowlisted payee, tab_status shows the drop` --references--> `openTab()`  [INFERRED]
+  docs/TESTNET.md → packages/mcp-server/src/owner/actions.ts
+- `Done-test A4: after expiry` --references--> `closeTab()`  [INFERRED]
+  docs/TESTNET.md → packages/mcp-server/src/owner/actions.ts
 
 ## Import Cycles
 - None detected.
 
 ## Hyperedges (group relationships)
+- **Testnet done-tests A1 to A8** — docs_testnet_a1, docs_testnet_a2, docs_testnet_a3, docs_testnet_a4, docs_testnet_a5, docs_testnet_a6, docs_testnet_a7, docs_testnet_a8, docs_testnet_done_tests_script, docs_testnet_deployment_record [EXTRACTED 1.00]
+- **Clock skew: cause, symptom, guard, proof** — docs_findings_08_x402_client_validbefore_local_clock_stock_client_validbefore_from_date_now, docs_findings_08_x402_client_validbefore_local_clock_facilitator_opaque_refusal, docs_findings_08_x402_client_validbefore_local_clock_max_clock_skew_guard, packages_mcp_server_src_x402sign_createsigner, docs_testnet_a8, docs_findings_08_x402_client_validbefore_local_clock_snapshot_and_guard_in_int_test [INFERRED 0.95]
+- **Agent-key server vs owner-key CLI boundary** — packages_mcp_server_readme_two_programs_two_keys, packages_mcp_server_readme_boundary_test, packages_mcp_server_src_agentkeys_agentkeys, packages_mcp_server_src_owner_keyfile_owneraccount, packages_mcp_server_src_index_createserver, github_workflows_ci_job_mcp_server, docs_security_keys_biggest_problem [INFERRED 0.95]
 - **The nine refusal checks of Tab.isValidSignature** — contracts_src_tab_check_not_implementation, contracts_src_tab_check_not_closed, contracts_src_tab_check_signature_length, contracts_src_tab_check_hash_matches_transfer_digest, contracts_src_tab_check_signer_is_agent, contracts_src_tab_check_not_expired, contracts_src_tab_check_validbefore_within_expiry, contracts_src_tab_check_value_within_maxpercall, contracts_src_tab_check_to_is_payee [EXTRACTED 1.00]
 - **The eight validations of TabFactory.openTab** — contracts_src_tabfactory_check_agent_nonzero, contracts_src_tabfactory_check_payee_count, contracts_src_tabfactory_check_payee_nonzero, contracts_src_tabfactory_check_cap_nonzero, contracts_src_tabfactory_check_maxpercall_nonzero, contracts_src_tabfactory_check_maxpercall_within_cap, contracts_src_tabfactory_check_expiry_in_future, contracts_src_tabfactory_check_funding_succeeded [EXTRACTED 1.00]
-- **Revocation does not depend on the sweep: close(), its design note, review finding and tests** — contracts_src_tab_close, docs_security_design_close_ordering, docs_security_review_close_revocation, contracts_test_tab_close_t_test_close_revokes_the_agent_even_when_usdc_refuses_the_sweep, contracts_test_tab_close_t_test_a_false_return_from_usdc_still_closes_and_reports_not_swept [INFERRED 0.95]
-- **Settlement flow: relayer -> USDC.transferWithAuthorization -> Tab.isValidSignature -> digest rebuild + ECDSA recover** — contracts_test_utils_base_settle, contracts_test_utils_base_iusdcfull_transferwithauthorization_bytes, contracts_src_tab_isvalidsignature, contracts_src_tab_transferdigest, openzeppelin_ecdsa_tryrecovercalldata, contracts_src_tab_ispayee [INFERRED 0.95]
 
-## Communities (8 total, 0 thin omitted)
+## Communities (22 total, 4 thin omitted)
 
-### Community 0 - "isValidSignature Checks & Refuse Tests"
-Cohesion: 0.12
-Nodes (72): isValidSignature check: hash != rebuilt transfer digest -> REFUSED, isValidSignature check: block.timestamp > expiry -> REFUSED, isValidSignature check: signature.length != 213 -> REFUSED, isValidSignature check: ECDSA recover error or signer != agent -> REFUSED, isValidSignature check: to not in payees -> REFUSED, isValidSignature check: validBefore > expiry -> REFUSED, isValidSignature check: value > maxPerCall -> REFUSED, Tab._isPayee() (+64 more)
-
-### Community 1 - "Invariant Handler & Ghosts"
-Cohesion: 0.08
-Nodes (53): Arc quirk: a transfer that would empty a fresh account reverts ('Cannot clear balance of empty account'), Handler.agentPaysAboveMax(), Handler.agentPaysOutsider(), Handler.agentPaysPayee(), Handler._attempt(), Handler.Attempt (struct), Handler.constructor(), Handler (invariant handler contract) (+45 more)
-
-### Community 2 - "TabFactory & Opening Checks"
-Cohesion: 0.12
-Nodes (49): IUSDC.transferFrom() [external USDC call], MAX_PAYEES (file-level constant = 20), TabFactory.BadPayeeCount (error), openTab check: agent == address(0) -> revert ZeroAgent, openTab check: cap == 0 -> revert ZeroCap, openTab check: expiry <= block.timestamp -> revert ExpiryNotInFuture, openTab check: USDC.transferFrom returned false -> revert FundingFailed, openTab check: maxPerCall == 0 -> revert ZeroMaxPerCall (+41 more)
-
-### Community 3 - "SECURITY.md: Review & Design"
-Cohesion: 0.08
-Nodes (38): slither.config.json fails on medium and above; one inline suppression, SECURITY.md (phase 1: contracts), Independent adversarial code review of commit 881fcc7: no way for a non-owner to move money or the agent to exceed the terms; three findings fixed, Design: the factory does not reject every odd set of terms (duplicate payees, tab as payee, owner == agent, contract agent), Design: no assembly in src/ (only inside OpenZeppelin Clones and ECDSA), Non-promise: isValidSignature is a view, so it cannot rate-limit; a leaked agent key can drain the tab to the payees, Keys: phase 2 must keep the owner key away from the process holding the agent key (Stellar's bin/barkeep-mcp read both), Mutation check: each check in Tab.sol and each validation in TabFactory.sol is deleted in turn; 25 of 25 mutants die; needs a green baseline and a named failing test (+30 more)
-
-### Community 4 - "Tooling, Arc Foundry & Arc Quirks"
+### Community 0 - "close(), Revocation & Arc Quirks"
 Cohesion: 0.07
-Nodes (25): Contracts README, arc-anvil --network arc deploys Arc's system contracts; tests fork from it (71 tests), Arc Foundry (arc-forge / arc-cast / arc-anvil v0.8.0-1), not upstream Foundry, Arc quirk: fuzzer's random senders rejected with 'Blocked address'; suites pin one targetSender, Arc quirk: native balance (18 decimals) and USDC ERC-20 view (6 decimals) are one balance; vm.deal funds USDC, script/mutation-check.py: needs a green baseline, removes each check in turn, 25 of 25 mutants must die, Removes each security check from src/Tab.sol and src/TabFactory.sol in turn and…, SanityTest (test contract) (+17 more)
+Nodes (64): Arc quirk: fuzzer's random senders rejected with 'Blocked address'; suites pin one targetSender, Arc quirk: a transfer that would empty a fresh account reverts ('Cannot clear balance of empty account'), close check: msg.sender != owner -> revert NotOwner, isValidSignature check: closed -> REFUSED, Tab.close(), Tab.Closed (event: owner, amount, swept), Tab.closed (only storage variable), Tab.NotOwner (error) (+56 more)
 
-### Community 5 - "Tab Terms, Getters & USDC Interface"
+### Community 1 - "MCP Tools, Known Limits & Deviations"
+Cohesion: 0.08
+Nodes (51): Known limit: tabs not opened by the factory carry no guarantees, Known limit: cannot pay a Circle Gateway batched option (ecrecover only), Spec deviation: open_tab does not deploy and close_tab does not sweep, MCP tool close_tab, MCP tool open_tab, MCP tool pay_and_fetch, MCP tool tab_status, readBack() (+43 more)
+
+### Community 2 - "USDC Interface & Test Interface"
+Cohesion: 0.07
+Nodes (61): IUSDC (interface), IUSDC.balanceOf() [external USDC call], IUSDC.transfer() [external USDC call], IUSDC.transferFrom() [external USDC call], Finding 08: x402 client dates validBefore by the local clock, Advice: on simulation_failed with everything else right, compare your clock with the latest block timestamp, Asymmetric window: tolerates a clock 10 minutes fast but only maxTimeoutSeconds slow, A clock ahead makes the authorization outlive the seller's timeout and breaks the tab's validBefore <= expiry clamp (+53 more)
+
+### Community 3 - "isValidSignature Checks & Refuse Tests"
 Cohesion: 0.11
-Nodes (34): Dependencies: OpenZeppelin Contracts v5.7.0 (Clones, ECDSA, IERC1271), forge-std v1.16.2, pinned submodules, IUSDC (interface), IUSDC.balanceOf() [external USDC call], Tab.agent(), Tab.balance(), isValidSignature check: address(this) == SELF -> REFUSED, terms check: address(this) == SELF -> revert NotATab, Tab.EIP712_DOMAIN_TYPEHASH (constant) (+26 more)
+Nodes (59): isValidSignature check: hash != rebuilt transfer digest -> REFUSED, isValidSignature check: block.timestamp > expiry -> REFUSED, isValidSignature check: signature.length != 213 -> REFUSED, isValidSignature check: ECDSA recover error or signer != agent -> REFUSED, isValidSignature check: to not in payees -> REFUSED, isValidSignature check: validBefore > expiry -> REFUSED, isValidSignature check: value > maxPerCall -> REFUSED, Tab._isPayee() (+51 more)
 
-### Community 6 - "close() & Revocation"
-Cohesion: 0.21
-Nodes (23): IUSDC.transfer() [external USDC call], close check: msg.sender != owner -> revert NotOwner, isValidSignature check: closed -> REFUSED, Tab.close(), Tab.Closed (event: owner, amount, swept), Tab.closed (only storage variable), Tab.NotOwner (error), Handler.ownerCloses() (+15 more)
+### Community 4 - "Tooling, Arc Foundry & Mutation Check"
+Cohesion: 0.06
+Nodes (41): Contracts README, arc-anvil --network arc deploys Arc's system contracts; tests fork from it (71 tests), Arc Foundry (arc-forge / arc-cast / arc-anvil v0.8.0-1), not upstream Foundry, script/mutation-check.py: needs a green baseline, removes each check in turn, 25 of 25 mutants must die, slither.config.json fails on medium and above; one inline suppression, Removes each security check from src/Tab.sol and src/TabFactory.sol in turn and…, Independent adversarial code review of commit 881fcc7, Decision: close() sets closed first, then try/catch sweep (+33 more)
 
-### Community 7 - "Test Base & Real USDC Interface"
+### Community 5 - "TabFactory & Opening Checks"
+Cohesion: 0.10
+Nodes (41): MAX_PAYEES (file-level constant = 20), TabFactory.BadPayeeCount (error), openTab check: agent == address(0) -> revert ZeroAgent, openTab check: cap == 0 -> revert ZeroCap, openTab check: expiry <= block.timestamp -> revert ExpiryNotInFuture, openTab check: USDC.transferFrom returned false -> revert FundingFailed, openTab check: maxPerCall == 0 -> revert ZeroMaxPerCall, openTab check: maxPerCall > cap -> revert MaxPerCallAboveCap (+33 more)
+
+### Community 6 - "Sanity Tests & Native Balance"
+Cohesion: 0.07
+Nodes (32): Arc quirk: native balance (18 decimals) and USDC ERC-20 view (6 decimals) are one balance; vm.deal funds USDC, SanityTest (test contract), SanityTest.test_native_balance_and_erc20_view_are_one_balance(), SanityTest.test_usdc_is_the_real_thing(), Base.sol (test utils), Base.Auth (struct), Base (abstract test contract), Base.CANCEL_TYPEHASH (constant) (+24 more)
+
+### Community 7 - "MCP Package Manifest"
+Cohesion: 0.07
+Nodes (29): bin, barkeep-arc-mcp, barkeep-arc-owner, dependencies, @modelcontextprotocol/sdk, viem, @x402/core, @x402/evm (+21 more)
+
+### Community 8 - "Test Helpers & Pay Tests"
+Cohesion: 0.16
+Nodes (23): TAB_SIGNATURE_BYTES, storedText(), challenge(), FACTORY, fakeChain(), NET, NOW, offer() (+15 more)
+
+### Community 9 - "Tab Terms & Getters"
 Cohesion: 0.15
-Nodes (16): Handler.USDC (constant), SanityTest.test_usdc_is_the_real_thing(), Base.sol (test utils), Base.Auth (struct), Base (abstract test contract), Base.CANCEL_TYPEHASH (constant), IUSDCFull (interface: Arc's real USDC as the tests drive it), IUSDCFull.allowance() (+8 more)
+Nodes (28): Dependencies: OpenZeppelin Contracts v5.7.0 (Clones, ECDSA, IERC1271), forge-std v1.16.2, pinned submodules, Tab.agent(), Tab.balance(), isValidSignature check: address(this) == SELF -> REFUSED, terms check: address(this) == SELF -> revert NotATab, Tab.EIP712_DOMAIN_TYPEHASH (constant), Tab.expiry(), Tab.MAGIC (constant, ERC-1271 magic value) (+20 more)
+
+### Community 10 - "ABIs & Chain Adapter"
+Cohesion: 0.15
+Nodes (18): FACTORY_ABI, TAB_ABI, USDC_ABI, OnChainTab, deploymentFile(), closeTab(), deployFactory(), describeRequest() (+10 more)
+
+### Community 11 - "Testnet Done-tests Script"
+Cohesion: 0.10
+Nodes (17): chain, client, done(), factory, file, keys, net, outsiderKey (+9 more)
+
+### Community 12 - "Demo Seller & Circle Client"
+Cohesion: 0.19
+Nodes (13): CircleAnswer, DemoSeller, SellerLogEntry, make(), REPO_ROOT, USDC, USDC_DOMAIN, SignedPayment (+5 more)
+
+### Community 13 - "TypeScript Config"
+Cohesion: 0.11
+Nodes (17): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, moduleResolution, noEmit (+9 more)
+
+### Community 14 - "Root Package Manifest"
+Cohesion: 0.15
+Nodes (12): engines, node, license, name, private, scripts, test:int, test:unit (+4 more)
+
+### Community 15 - "Owner Key File & CLI"
+Cohesion: 0.23
+Nodes (9): barkeep-arc-owner (owner's command line, human-run), NetworkName, DEFAULT_KEY_NAME, keysFile(), namedAccount(), ownerAccount(), PaymentRecord, Receipt (+1 more)
+
+### Community 16 - "Agent Keys & Forced Signing"
+Cohesion: 0.31
+Nodes (5): forceSign(), AgentKeys, tabSigner(), createSigner(), setup()
+
+### Community 18 - "Agent Key & Boundary Tests"
+Cohesion: 0.31
+Nodes (5): StoredAgentKey, SRC, ref_node_fs, ref_node_path, ref_node_url
 
 ## Knowledge Gaps
-- **4 isolated node(s):** `install-arc-foundry.sh script`, `Handler.owner (immutable)`, `Unaudited: reviewed only by the author and the listed tools`, `Base.Auth (struct)`
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 9 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **100 isolated node(s):** `install-arc-foundry.sh script`, `name`, `private`, `version`, `license` (+95 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 148 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `SECURITY.md (phase 1: contracts)` connect `SECURITY.md: Review & Design` to `isValidSignature Checks & Refuse Tests`, `Invariant Handler & Ghosts`, `TabFactory & Opening Checks`, `Tooling, Arc Foundry & Arc Quirks`, `Tab Terms, Getters & USDC Interface`, `close() & Revocation`?**
-  _High betweenness centrality (0.200) - this node is a cross-community bridge._
-- **Why does `Tab.isValidSignature()` connect `isValidSignature Checks & Refuse Tests` to `Invariant Handler & Ghosts`, `TabFactory & Opening Checks`, `SECURITY.md: Review & Design`, `Tab Terms, Getters & USDC Interface`, `close() & Revocation`?**
-  _High betweenness centrality (0.177) - this node is a cross-community bridge._
-- **Why does `Handler (invariant handler contract)` connect `Invariant Handler & Ghosts` to `isValidSignature Checks & Refuse Tests`, `Tab Terms, Getters & USDC Interface`, `close() & Revocation`, `Test Base & Real USDC Interface`?**
-  _High betweenness centrality (0.098) - this node is a cross-community bridge._
-- **Are the 25 inferred relationships involving `Tab.isValidSignature()` (e.g. with `Handler._judge()` and `TabInvariantBase.invariant_no_attempt_ever_contradicts_the_model()`) actually correct?**
-  _`Tab.isValidSignature()` has 25 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `install-arc-foundry.sh script`, `Handler.owner (immutable)`, `Unaudited: reviewed only by the author and the listed tools` to the rest of the system?**
-  _4 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `isValidSignature Checks & Refuse Tests` be split into smaller, more focused modules?**
-  _Cohesion score 0.11737089201877934 - nodes in this community are weakly interconnected._
-- **Should `Invariant Handler & Ghosts` be split into smaller, more focused modules?**
-  _Cohesion score 0.08215488215488216 - nodes in this community are weakly interconnected._
+- **Why does `Tab.isValidSignature()` connect `isValidSignature Checks & Refuse Tests` to `close(), Revocation & Arc Quirks`, `USDC Interface & Test Interface`, `Tooling, Arc Foundry & Mutation Check`, `TabFactory & Opening Checks`, `Tab Terms & Getters`?**
+  _High betweenness centrality (0.217) - this node is a cross-community bridge._
+- **Why does `TabFactory.openTab()` connect `TabFactory & Opening Checks` to `USDC Interface & Test Interface`, `isValidSignature Checks & Refuse Tests`, `Tooling, Arc Foundry & Mutation Check`, `Sanity Tests & Native Balance`, `Tab Terms & Getters`?**
+  _High betweenness centrality (0.094) - this node is a cross-community bridge._
+- **Why does `Tab.close()` connect `close(), Revocation & Arc Quirks` to `Tab Terms & Getters`, `USDC Interface & Test Interface`, `Tooling, Arc Foundry & Mutation Check`, `TabFactory & Opening Checks`?**
+  _High betweenness centrality (0.085) - this node is a cross-community bridge._
+- **Are the 30 inferred relationships involving `Tab.isValidSignature()` (e.g. with `What the contract promises (five guarantees)` and `Handler._judge()`) actually correct?**
+  _`Tab.isValidSignature()` has 30 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 3 inferred relationships involving `Tab (contract)` (e.g. with `Tab: one contract per tab, funded with exactly the cap` and `Known limit: the balance can exceed the cap (donations)`) actually correct?**
+  _`Tab (contract)` has 3 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 11 inferred relationships involving `TabFactory.openTab()` (e.g. with `Terms in clone bytecode (EIP-1167 immutable args, CREATE2)` and `TabFactoryTest.test_a_tab_is_funded_with_exactly_the_cap_and_the_factory_keeps_nothing()`) actually correct?**
+  _`TabFactory.openTab()` has 11 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `install-arc-foundry.sh script`, `name`, `private` to the rest of the system?**
+  _100 weakly-connected nodes found - possible documentation gaps or missing edges._

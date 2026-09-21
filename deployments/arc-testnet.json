@@ -1,0 +1,959 @@
+{
+  "network": "arc-testnet",
+  "chainId": 5042002,
+  "explorer": "https://explorer.testnet.arc.io",
+  "usdc": "0x3600000000000000000000000000000000000000",
+  "contracts": {
+    "tabFactory": {
+      "address": "0xd7c3e0106ba18e73fc195088e453a370ef9ba9ed",
+      "implementation": "0x050C6f9e94F56A81971F2674510b179c2D8Ec0Ba",
+      "deployer": "0x1a80c286cAB35b8CA58af33DDfCc7FEAE409aC57",
+      "deployTx": "0x7f6dda25cdc97b649a7eb3eba2f51a19c954c8fb35778f534bf002d6a15bf420",
+      "explorer": "https://explorer.testnet.arc.io/tx/0x7f6dda25cdc97b649a7eb3eba2f51a19c954c8fb35778f534bf002d6a15bf420",
+      "block": 63222797,
+      "at": "2026-09-21T07:26:03.898Z"
+    }
+  },
+  "doneTests": {
+    "A1": {
+      "at": "2026-09-21T07:34:44.763Z",
+      "what": "open a tab, fund it, the agent pays an allowlisted payee, tab_status shows the balance drop",
+      "tabId": "tab_9a6f1fcd8775",
+      "tab": "0x95C704A54729170edc28fd7E2927627CDe1fd020",
+      "owner": "0x1a80c286cAB35b8CA58af33DDfCc7FEAE409aC57",
+      "agent": "0x514Acb58Be61cCb86fF35feaf9DeAdE463823C4E",
+      "payees": [
+        "0x645DD12775906233c9A43c123372118eae0B7065"
+      ],
+      "cap": "0.5 USDC",
+      "maxPerCall": "0.1 USDC",
+      "approveTx": {
+        "hash": "0x7702a20dfdb867a97629914c222c04136bb2a487ab3834b2d4db661ca1592085",
+        "explorer": "https://explorer.testnet.arc.io/tx/0x7702a20dfdb867a97629914c222c04136bb2a487ab3834b2d4db661ca1592085",
+        "status": "success",
+        "block": 63223814,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0x095ea7b3",
+        "gasUsed": "55438",
+        "feeUsdc": 0.00138595
+      },
+      "openTx": {
+        "hash": "0x11f9232d1dcd73fa0bd9eb80ec3efaabac2364a02146b572c2e04e4d53701c81",
+        "explorer": "https://explorer.testnet.arc.io/tx/0x11f9232d1dcd73fa0bd9eb80ec3efaabac2364a02146b572c2e04e4d53701c81",
+        "status": "success",
+        "block": 63223816,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0xd7c3e0106ba18e73fc195088e453a370ef9ba9ed",
+        "selector": "0x2b3d6a0c",
+        "gasUsed": "153464",
+        "feeUsdc": 0.0038366
+      },
+      "balanceBefore": "0.5 USDC",
+      "payment": {
+        "url": "/haiku",
+        "amount": "0.05 USDC",
+        "payTo": "0x645DD12775906233c9A43c123372118eae0B7065",
+        "tx": {
+          "hash": "0x872ccb3fbc9c61d5c40d256eca9c29803caa726eb3d1eed5508bd45011246f1a",
+          "explorer": "https://explorer.testnet.arc.io/tx/0x872ccb3fbc9c61d5c40d256eca9c29803caa726eb3d1eed5508bd45011246f1a",
+          "status": "success",
+          "block": 63223831,
+          "from": "0x06159ffeeecb472c0b085824dc7fcc343cbc7bfe",
+          "to": "0x3600000000000000000000000000000000000000",
+          "selector": "0xcf092995",
+          "gasUsed": "105603",
+          "feeUsdc": 0.0029780046
+        }
+      },
+      "balanceAfter": "0.45 USDC",
+      "spent": "0.05 USDC"
+    },
+    "A7": {
+      "at": "2026-09-21T07:34:44.764Z",
+      "what": "the tab's 213-byte ERC-1271 signature through Circle's Facilitator Service (keyless trial): verify, settle, hash read back",
+      "facilitator": "https://api.circle.com/v1/facilitator/x402",
+      "signatureBytes": 213,
+      "payer": "0x95C704A54729170edc28fd7E2927627CDe1fd020",
+      "verify": {
+        "httpStatus": 200,
+        "requestId": "bcc52085981e070f73a1be4d2a7b3c9a",
+        "body": {
+          "isValid": true,
+          "payer": "0x95c704a54729170edc28fd7e2927627cde1fd020"
+        }
+      },
+      "settle": {
+        "httpStatus": 200,
+        "requestId": "cfc5807de67ce023438ea16a26465779",
+        "body": {
+          "success": true,
+          "payer": "0x95c704a54729170edc28fd7e2927627cde1fd020",
+          "transaction": "0x872ccb3fbc9c61d5c40d256eca9c29803caa726eb3d1eed5508bd45011246f1a",
+          "network": "eip155:5042002",
+          "amount": "50000"
+        }
+      },
+      "tx": {
+        "hash": "0x872ccb3fbc9c61d5c40d256eca9c29803caa726eb3d1eed5508bd45011246f1a",
+        "explorer": "https://explorer.testnet.arc.io/tx/0x872ccb3fbc9c61d5c40d256eca9c29803caa726eb3d1eed5508bd45011246f1a",
+        "status": "success",
+        "block": 63223831,
+        "from": "0x06159ffeeecb472c0b085824dc7fcc343cbc7bfe",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "105603",
+        "feeUsdc": 0.0029780046
+      },
+      "signatureBytesOnChain": 213,
+      "relayer": "0x06159ffeeecb472c0b085824dc7fcc343cbc7bfe"
+    },
+    "A2": {
+      "at": "2026-09-21T07:34:50.239Z",
+      "what": "above maxPerCall: refused before signing; forced, Circle's verify refuses it, isValidSignature says no, and the submitted transfer reverts",
+      "beforeSigning": "This tab cannot make this payment: the price, 0.100001 USDC, is above this tab's per-call maximum of 0.1 USDC. The tab contract enforces the same rule on chain. Nothing was signed or paid.",
+      "circleVerify": {
+        "httpStatus": 200,
+        "requestId": "85b31ab285ba11db01d08502adfa0d52",
+        "body": {
+          "isValid": false,
+          "invalidReason": "invalid_exact_evm_payload_signature",
+          "payer": "0x95c704a54729170edc28fd7e2927627cde1fd020"
+        }
+      },
+      "sellerAnswer": {
+        "httpStatus": 402,
+        "body": {
+          "error": "invalid_exact_evm_payload_signature"
+        }
+      },
+      "tabAnswer": "0xffffffff",
+      "revertReason": "FiatTokenV2: invalid signature",
+      "tx": {
+        "hash": "0xf8868aa6f0e1fa8c0119cfdcb8d7d9bbc4133a1d9113bd28306c40cbfa4bbb1e",
+        "explorer": "https://explorer.testnet.arc.io/tx/0xf8868aa6f0e1fa8c0119cfdcb8d7d9bbc4133a1d9113bd28306c40cbfa4bbb1e",
+        "status": "reverted",
+        "block": 63223840,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "64005",
+        "feeUsdc": 0.001600125
+      },
+      "balanceUnchanged": "0.45 USDC"
+    },
+    "A3": {
+      "at": "2026-09-21T07:34:56.032Z",
+      "what": "a non-payee: refused before signing; forced, Circle's verify refuses it, isValidSignature says no, the submitted transfer reverts",
+      "beforeSigning": "This tab cannot make this payment: 0x31474F13e4b37e930A82d3c18AA6C71e300Bd6cF is not one of this tab's payees (0x645DD12775906233c9A43c123372118eae0B7065). The tab contract enforces the same rule on chain. Nothing was signed or paid.",
+      "circleVerify": {
+        "httpStatus": 200,
+        "requestId": "4cdcd746c873b53e724989a2202342d8",
+        "body": {
+          "isValid": false,
+          "invalidReason": "invalid_exact_evm_payload_signature",
+          "payer": "0x95c704a54729170edc28fd7e2927627cde1fd020"
+        }
+      },
+      "sellerAnswer": {
+        "httpStatus": 402,
+        "body": {
+          "error": "invalid_exact_evm_payload_signature"
+        }
+      },
+      "tabAnswer": "0xffffffff",
+      "revertReason": "FiatTokenV2: invalid signature",
+      "tx": {
+        "hash": "0x70ad133285fc0165688417f36d2b3849d0896b349b9cd74f2902fef7471d7ab0",
+        "explorer": "https://explorer.testnet.arc.io/tx/0x70ad133285fc0165688417f36d2b3849d0896b349b9cd74f2902fef7471d7ab0",
+        "status": "reverted",
+        "block": 63223852,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "64231",
+        "feeUsdc": 0.001605775
+      },
+      "outsiderBalance": "0 USDC"
+    },
+    "A8": {
+      "at": "2026-09-21T07:35:01.206Z",
+      "what": "local clock skewed by +180s and -180s against Arc Testnet's: the signer reports it and signs nothing",
+      "signerSaid": {
+        "+180s": "this machine's clock is 180s ahead of arc-testnet's (block 63223869); fix the clock. An authorization signed now would outlive what the seller asked for",
+        "-180s": "this machine's clock is 179s behind arc-testnet's (block 63223869); fix the clock. An authorization signed now would already be expired"
+      },
+      "balanceUnchanged": "0.4 USDC"
+    },
+    "A6": {
+      "at": "2026-09-21T07:44:41.251Z",
+      "what": "outcome unknown: the seller settles through Circle, then tells the buyer settlement_pending. The buyer asks USDC whether the nonce was used, never signs again, and collects with the same signature",
+      "buyer": {
+        "paid": true,
+        "note": "the seller answered HTTP 402 (settlement_pending); the chain shows the payment was made",
+        "tx": {
+          "hash": "0xab1179b52b10494fb741f348d4d7707d39937afb2f0b023ee5d74b1d7a99801e",
+          "explorer": "https://explorer.testnet.arc.io/tx/0xab1179b52b10494fb741f348d4d7707d39937afb2f0b023ee5d74b1d7a99801e",
+          "status": "success",
+          "block": 63223866,
+          "from": "0x06159ffeeecb472c0b085824dc7fcc343cbc7bfe",
+          "to": "0x3600000000000000000000000000000000000000",
+          "selector": "0xcf092995",
+          "gasUsed": "105603",
+          "feeUsdc": 0.0027984795
+        },
+        "chargedOnce": "0.05 USDC",
+        "identicalCallReplayed": true,
+        "body": "Half a second, then /\nnothing left to re"
+      },
+      "seller": {
+        "realPendingSeen": 0,
+        "settlesThisRun": 152,
+        "note": "Circle returned no settlement_pending in 152 settles, so the seller's /status polling did not run on Testnet in this run. It ran once in the spike (barkeep, deployments/arc-testnet.json: payment 72ef4b26-4f82-405a-a01b-bcc5f3964fc7, completed as 0x503e92a74c7c056704c9f8e4cb1b530f2496c5c0a772739599cbf188cf3f62b5)."
+      }
+    },
+    "A5": {
+      "at": "2026-09-21T07:44:52.335Z",
+      "what": "close_tab destroys the agent key; the owner closes on chain; a payment signed while the key still existed is refused; balance zero",
+      "closeTab": {
+        "tab_id": "tab_9a6f1fcd8775",
+        "agent_key": "destroyed: this server can no longer sign a payment from this tab",
+        "on_chain": "still open on chain with 0.25 USDC in it",
+        "next_step": "Closing the contract and returning the money takes the owner's key, which this server does not have. The owner runs: npx barkeep-arc-owner close tab_9a6f1fcd8775"
+      },
+      "afterDestroy": "tab_9a6f1fcd8775 is closed; open a tab to pay",
+      "closeTx": {
+        "hash": "0x9abd1ce72afc33bb771687e172597e96aafdf7eb7119f47618dfc9b85d606164",
+        "explorer": "https://explorer.testnet.arc.io/tx/0x9abd1ce72afc33bb771687e172597e96aafdf7eb7119f47618dfc9b85d606164",
+        "status": "success",
+        "block": 63225029,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0x95c704a54729170edc28fd7e2927627cde1fd020",
+        "selector": "0x43d726d6",
+        "gasUsed": "79335",
+        "feeUsdc": 0.001983375
+      },
+      "swept": true,
+      "returnedToOwner": "0.248016 USDC",
+      "tabAnswer": "0xffffffff",
+      "revertReason": "FiatTokenV2: invalid signature",
+      "tx": {
+        "hash": "0xc9100471d2175a65fdce1e0b1af0ddb9af7a95590d064efb39b7fd916654d99f",
+        "explorer": "https://explorer.testnet.arc.io/tx/0xc9100471d2175a65fdce1e0b1af0ddb9af7a95590d064efb39b7fd916654d99f",
+        "status": "reverted",
+        "block": 63225040,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "56390",
+        "feeUsdc": 0.00140975
+      },
+      "balance": "0 USDC",
+      "status": "closed on chain"
+    },
+    "A4": {
+      "at": "2026-09-21T07:46:49.049Z",
+      "what": "after expiry: refused before signing; the tab answers no to a signature it accepted while open; the submitted transfer reverts; the owner still gets the money back",
+      "tabId": "tab_c1ffd7a1430f",
+      "tab": "0xD6e319557C583f350182766FF5862817D9f636C1",
+      "openTx": {
+        "hash": "0xaaf267b159f129e0188f79bf49a23eb0030d2379ff5a9256f2b403f5e50f118e",
+        "explorer": "https://explorer.testnet.arc.io/tx/0xaaf267b159f129e0188f79bf49a23eb0030d2379ff5a9256f2b403f5e50f118e",
+        "status": "success",
+        "block": 63225052,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0xd7c3e0106ba18e73fc195088e453a370ef9ba9ed",
+        "selector": "0x2b3d6a0c",
+        "gasUsed": "153440",
+        "feeUsdc": 0.003836
+      },
+      "expiry": "2026-09-21T07:46:32.000Z",
+      "whileOpen": {
+        "tabAnswer": "0x1626ba7e",
+        "simulation": "would succeed"
+      },
+      "beforeSigning": "This tab cannot make this payment: the tab expired at 2026-09-21T07:46:32.000Z. The tab contract enforces the same rule on chain. Nothing was signed or paid.",
+      "tabAnswerAfterExpiry": "0xffffffff",
+      "revertReason": "FiatTokenV2: authorization is expired",
+      "tx": {
+        "hash": "0xfe5f00b24b5da3edac9aef6063030fd8ecfb0b7baf23c67a053737fcfa03421c",
+        "explorer": "https://explorer.testnet.arc.io/tx/0xfe5f00b24b5da3edac9aef6063030fd8ecfb0b7baf23c67a053737fcfa03421c",
+        "status": "reverted",
+        "block": 63225260,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "35838",
+        "feeUsdc": 0.00089595
+      },
+      "note": "USDC reports its own expiry check first, because the tab only accepts authorizations that die with it (validBefore <= expiry). The tab's answer is read directly above.",
+      "closeTx": {
+        "hash": "0xea350793cc77cd84977eeb533a7101837fd4eb0fa273aad7e01afe9b631483b6",
+        "explorer": "https://explorer.testnet.arc.io/tx/0xea350793cc77cd84977eeb533a7101837fd4eb0fa273aad7e01afe9b631483b6",
+        "status": "success",
+        "block": 63225270,
+        "from": "0x1a80c286cab35b8ca58af33ddfcc7feae409ac57",
+        "to": "0xd6e319557c583f350182766ff5862817d9f636c1",
+        "selector": "0x43d726d6",
+        "gasUsed": "79335",
+        "feeUsdc": 0.001983375
+      },
+      "returned": "0.05 USDC",
+      "balance": "0 USDC"
+    },
+    "bill": {
+      "at": "2026-09-21T07:46:49.053Z",
+      "what": "the receipts the server wrote during this run, refusals included",
+      "receipts": [
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:09.208Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x6f82ce3c504b5a14d9a7f1cdafee9b30d48f332d67b9e08e72491df582b2ce55",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:12.243Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x1990fe12c0ebe50286c29de7019fb1577bb352e2a017b0e902e8f558df2f18be",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:16.231Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x3244b2310ae1a73ffd129177914134d86fe8e5dbcc683d3fcf35696eb0ad142d",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:20.262Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xaab3ececc3ecc5dfaad4f10b43e42f9348a2018bc58fafc7f19fc43feaed2d45",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:24.324Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xc619679266a1c927394f043c14c0e6e1aaf5d3417be455811e98f1a685777d2b",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:28.403Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x81abb70daa70948edc0e4f5eeeaa469e640734cd7199be6a164a2194612919df",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:31.600Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xb110aab52df491ef8adf32321f48108aab2b5ba93d4195f2f9d66a1d89c167d0",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:35.980Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xe51197d07167983e8844286dd3bd9f174ee872b450ebfaaafd6db5f6efa0f417",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:40.273Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x3d6d288485820a6c51595fb0a95327287bf18b693415845dee9d22e59db9e0e3",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:44.369Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xdb75ebce07cf92449571f651c14833f194d84860405ae54967d8e623c27eed2a",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:47.460Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x0929499ee58820b7acdaed651dce8f326e915627ac2e1b2354b314be92bd46d8",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:50.513Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x243c59be794721376955efe33fa233e74b78bea0d4c0c7acf49932f9ec4cb001",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:54.702Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x7c4cfde50e16f367a003aed8fbb1313611c85ab435afe7bdc6df3e610a719fb2",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:41:58.685Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xafc54ea5073591d714a0b137a708deb96e36fe147a3744e248d813ffa04c7a07",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:02.825Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xbba66a949d5c4fe757de5d406c0a7ba7a9abf429716894080d17aad2be0f89d2",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:06.860Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x9eeba30c9296a7d08a97dfd17e03a32bb9c4cff43827e140a6404bfadee60074",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:10.995Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x7b0c18678c8de275c5b464b2cab2cf6d544471675b37459fbc3c7f8fbc076028",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:15.023Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x117bdc9db34373649126f43fdb22607f4d3682e01f8a0ee4078c92096900e5b2",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:19.078Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x37060c0c8ac5d8e966d8006d846acee97aa49a5c05625a6eaecc0ef3f77120b0",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:23.098Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x1e1d93e1c8ac4ac0dd98e6210eaa83bc5454fbbb0844458b51c0975bff81a5f7",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:26.085Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x0b7bedabb726ba770a2a1016b4fafd30ec9dea3ebe60a902faa7e77af9af6ad4",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:30.185Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xa6104815392976a81d4315957bb64597cfc247336798f863421589eb29e5a798",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:35.553Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xb2e9b17a785fc6ffe15adb4f1dcbd8bfe529be43056c3d5a82f8db7111dea3b2",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:38.744Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xec5f643c5033e49a51f2ac1aaabeee95321e6d878145a9ff353835bfae3f2e38",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:42.859Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x449f59f1acb8dbad57d29f63540430e390211b78f333ffeef38575ceac1d25c2",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:46.934Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xfaafadf09e0beb5025fe2f017481d7832ee8f4dc43e63866f832b043b8b7db79",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:51.034Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x1553139e4411254fd4026cf9c186baf148225de28f32911f5353a5309c4e775a",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:55.356Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xa25b69804950c91a4144e49c1ca0b88123ece81f00f57253586aeff9b6ff182b",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:42:59.556Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x4a466626c794f181b0f54d75f3edd969bcb1fe1503271fb45c01fb0bcad22017",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:02.642Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x6f1c766919593f5b82bac15fc8c3419b8b009483e28cfdbef1449cfb27612b9c",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:06.767Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xfa3110058775a34759d11b653c4d8d306826263d548c38ed5db61dbccbf98e94",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:09.878Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xe6a4b1b23485f20792444a6ef9796e90e234a2a92e69ae185993eb330814620d",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:13.887Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x929da832d5578588c8fa937082d02646ee66a209b4e45fdb0b114f55ad0ff17c",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:17.470Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x72c713077449bb4f0c114659f89733afe232fab203ad7f4e64e38eb0d619ec2b",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:20.675Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x7ba76fba70c4bb9e6e583597ff977b630892d27f1f6cf4c347cfe03fb72b4a32",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:24.735Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xf72643ea4a274dd916166c6baded74f5ab387e45492355a256d6782db52f9601",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:27.717Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x6dd994ed29e5dc33d1787015b3af37cc486c842af6fc661001931d908a8d876f",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:32.789Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x54d0619380f8c96aeafa9944d2ea256902fcaebf912719f23953635cc85295cf",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:37.847Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xac94e9c8f2c3499dc2ad77bc2430f6be920252b41b3603fd908c33e2e2a11b35",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:41.875Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x08354a6048e2f7341d5af8a5ed74aec5f8621c47710f04ebf0ab400e0665f5a0",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:45.105Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x2792a2e0d68d889862a282bc6965cd5205522190d3d1fb259c8022933ec83bb1",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:48.172Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x9528586a1eea681e987a721fd05c75dd026b88c1854a0c278b046d91931ad19f",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:52.422Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xfb85f2865d1111a1595d08f5f69de0427a12e169ae8fd8d4622dc2c214fa8243",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:56.560Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xdb750940499f05e525d002c57edf428703bcf3ee48093772b20ba331fa84edf3",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:43:59.874Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x49881d93377b5a946e6ba707b8fabd239e8796bf4e462b8129262dab63dfea5e",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:03.968Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x14807eeeaa467826a49f6d88e1063fd405722da197ee40c9c4503f0aba903a1f",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:08.001Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x18f63e2aba14448114e418b1d2fe5328fa6a9bc03a55e8b2f6e2a6698d385b6e",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:11.230Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xd398e0d3b20bb7629241c5ef2c7f20bdda8a84c55ad465dd848b72c8e680c86f",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:15.284Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x62b92dbdcf27ea217eb26567dbcd5e1a4f58843eac228c97a422bb7fb3281912",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:20.552Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x0199730ae100362c7d44280faf10febb6b0d25c36a92bb25fcb9cbcb91b6b04d",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:23.594Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x213c60ef490d1212a363d42d3888033c0835eacc22c121340d1ca575d96236f0",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:26.759Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x02de381a00945ece46ef67a7cf75737267ebf2511bc381ea302811beb989ff0f",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:30.875Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x028a22a81fa5e38b7fe54684ef79aea04df3fb3b024b2acee5fb20fb6fefcd78",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:33.966Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x7800b221e534752a64c627a848357e82eb67b56343e4f2ca0d27ec0b9b7f99ab",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:37.012Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0xcf6f242b71a140bb45735083c10099f371b3153614a75d9b5f8ca719012a41ef",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:41.243Z",
+          "kind": "payment",
+          "amount": "0.001",
+          "asset": "USDC",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "tx": "0x42c2efe86a99b7a47a5b5b254004649a69aa51435d3ea81f24e47d2ddac08bbd",
+          "endpoint": "http://127.0.0.1:52628/cheap"
+        },
+        {
+          "tabId": "tab_9a6f1fcd8775",
+          "at": "2026-09-21T07:44:41.261Z",
+          "kind": "close",
+          "note": "agent key destroyed; this server can no longer sign for the tab"
+        },
+        {
+          "tabId": "tab_c1ffd7a1430f",
+          "at": "2026-09-21T07:44:52.528Z",
+          "kind": "request",
+          "amount": "0.05",
+          "asset": "USDC",
+          "note": "requested: cap 0.05 USDC, at most 0.01 USDC per call, 1 payee(s)"
+        },
+        {
+          "tabId": "tab_c1ffd7a1430f",
+          "at": "2026-09-21T07:44:57.970Z",
+          "kind": "open",
+          "amount": "0.05",
+          "asset": "USDC",
+          "tx": "0xaaf267b159f129e0188f79bf49a23eb0030d2379ff5a9256f2b403f5e50f118e",
+          "to": "0xD6e319557C583f350182766FF5862817D9f636C1"
+        },
+        {
+          "tabId": "tab_c1ffd7a1430f",
+          "at": "2026-09-21T07:46:37.920Z",
+          "endpoint": "http://127.0.0.1:52628/cheap",
+          "asset": "USDC",
+          "kind": "refused",
+          "refusedBy": "tab terms",
+          "amount": "0.001",
+          "to": "0x645DD12775906233c9A43c123372118eae0B7065",
+          "reason": "the tab expired at 2026-09-21T07:46:32.000Z"
+        }
+      ]
+    },
+    "earlierRun": {
+      "at": "2026-09-21T07:29:22.945Z",
+      "what": "The first full run, 13 minutes before the recorded one. Kept because its transactions are real and because it contained a mistake.",
+      "mistake": "A3 asked Circle to settle to an address other than the seller's own. On the keyless trial Circle serves only the payTo whose key signed the seller proof, so it answered 401 {\"code\":401,\"message\":\"authentication required\"} and never looked at the tab's signature. The run recorded that as Circle refusing a non-payee, which it was not. The script now uses a second seller with its own key for the non-payee case, and also puts the over-maximum signature in front of Circle.",
+      "tab": "0x3eb744131c1C1f7E2E04c683E5ae9b8df3246005",
+      "transactions": {
+        "A1 open": {
+          "hash": "0x1477fede23fd1d5a5b13b2a9cfecbc67277e2751a05eb091102c7254df3a1efc",
+          "status": "success",
+          "block": 63223174
+        },
+        "A1/A7 payment via Circle (213 bytes)": {
+          "hash": "0x4a1a8d085ee71caf89b87ae94a03479d6489c89ea9c51e07adb68935ed453e68",
+          "status": "success",
+          "block": 63223190
+        },
+        "A2 forced revert": {
+          "hash": "0x96ecf882b06fbc525f94d5e8f436320cbefff7c9357193da028c67da45f2f58b",
+          "status": "reverted",
+          "block": 63223198
+        },
+        "A3 forced revert": {
+          "hash": "0x52b01e1e62b388144b8a9c563dbc725155635e241dedfc0cac42e4c9696cfa15",
+          "status": "reverted",
+          "block": 63223210
+        },
+        "A6 recovered payment": {
+          "hash": "0x9ba6f8c840a92ecc1feb46d9fac5e5088aacdce2c29bf51b1f09ecdcd5753872",
+          "status": "success",
+          "block": 63223223
+        },
+        "A5 close": {
+          "hash": "0xac73cef10ebf03c006e7c49c2975df25365da9039ab8cb1d0f5ed471ed59c3e2",
+          "status": "success",
+          "block": 63223420
+        },
+        "A5 forced revert": {
+          "hash": "0x01a4bf3df44e1deb7b8a3542a031310fde8728088839678303ed4bf468ec9474",
+          "status": "reverted",
+          "block": 63223430
+        },
+        "A4 forced revert": {
+          "hash": "0x0b1b3086c010bde32a538b7dce0be339dfdddb006badc7853523010446c17b63",
+          "status": "reverted",
+          "block": 63223647
+        },
+        "A4 close": {
+          "hash": "0x21c59653b112a48c533af2f7acecf204c7bf02497f7d18f895bd9d526663c855",
+          "status": "success",
+          "block": 63223656
+        }
+      },
+      "circleSettles": 27
+    }
+  }
+}
