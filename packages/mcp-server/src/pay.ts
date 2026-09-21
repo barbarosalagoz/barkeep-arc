@@ -282,7 +282,8 @@ export function createPayer(deps: PayDeps) {
     if (second?.ok && settle?.success && settle.transaction) {
       // The seller says it settled. Read it back: the chain must show the nonce used.
       if (await deps.chain.authorizationUsed(tab.address!, signed.auth.nonce)) {
-        save({ status: "settled", tx: settle.transaction, httpStatus: second.status, body, bodyTruncated });
+        // Settled: the signed header has done its job. It is only kept while a lost answer might need re-sending.
+        save({ status: "settled", tx: settle.transaction, httpStatus: second.status, body, bodyTruncated, paymentHeader: undefined });
         deps.store.appendReceipt({ tabId: tab.tabId, at: record.updatedAt, kind: "payment", amount, asset: "USDC", to: chosen.payTo, tx: settle.transaction, endpoint: args.url });
         return fromRecord(record, false);
       }
@@ -342,7 +343,7 @@ export function createPayer(deps: PayDeps) {
     }
 
     const delivered = httpStatus !== undefined && httpStatus >= 200 && httpStatus < 300;
-    const settled: PaymentRecord = { ...record, status: "settled", tx, httpStatus, body, bodyTruncated, updatedAt: new Date().toISOString() };
+    const settled: PaymentRecord = { ...record, status: "settled", tx, httpStatus, body, bodyTruncated, paymentHeader: undefined, updatedAt: new Date().toISOString() };
     deps.store.putPayment(settled);
     deps.store.appendReceipt({
       tabId: tab.tabId, at: settled.updatedAt, kind: "payment", amount: fromBaseUnits(price), asset: "USDC", to: record.payTo, tx, endpoint: record.url,

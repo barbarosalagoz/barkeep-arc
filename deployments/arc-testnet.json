@@ -955,5 +955,15 @@
       },
       "circleSettles": 27
     }
+  },
+  "localStatePruned": {
+    "at": "2026-09-21T09:33:36Z",
+    "what": "signed PAYMENT-SIGNATURE headers removed from the server's local state (~/.local/state/barkeep-arc/mcp/payments.json). The payment records themselves are kept.",
+    "headersRemoved": 179,
+    "allSettledWithATransaction": true,
+    "firstPaymentStarted": "2026-09-21T07:29:17.621Z",
+    "lastPaymentStarted": "2026-09-21T07:44:37.390Z",
+    "latestValidBefore": "2026-09-21T07:45:37Z",
+    "why": "Each was an EIP-3009 authorization USDC has already consumed, and all were past validBefore, so none could be used again. They were kept only so a lost answer could be recovered by re-sending the same signature; once settled that need is over."
   }
 }
