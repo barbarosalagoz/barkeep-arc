@@ -31,6 +31,6 @@ npm run build --workspace @barkeep-arc/status && npm run test:bundle --workspace
 packages/status/scripts/deploy.sh --prod
 ```
 
-The deploy script builds here and uploads that output (`vercel build`, then `vercel deploy --prebuilt`). A build on Vercel's side sees only this folder, not `deployments/`, and ships a page with no refused attempts on it. That happened on the first deploy; the script now refuses to upload a record with none. The Vercel CLI also writes a `VERCEL_OIDC_TOKEN` into `.env.local` when it links or pulls; the script deletes it and `.gitignore` covers it.
+The deploy script builds here and uploads that output (`vercel build`, then `vercel deploy --prebuilt`). A build on Vercel's side sees only this folder, not `deployments/`, and ships a page with no refused attempts on it. That happened on the first deploy; the script now refuses to upload a record with none. The Vercel CLI also writes a `VERCEL_OIDC_TOKEN` into `.env.local` and into `.vercel/.env.<environment>.local` when it links or pulls. The first version of the script removed only the first of those, and a `.vercel/.env.production.local` sat on disk for a day (ignored, never tracked, since deleted). The script now removes all of them in an exit trap, so a failed deploy cleans up too; `test/deploy-script.test.ts` runs it with the CLI stubbed to fail.
 
 The tabs shown on Testnet: a demo tab left open for thirty days with 1 USDC (`packages/mcp-server/scripts/open-demo-tab-testnet.ts`, recorded as `demoTab`), the done-tests tab, and the expiry test tab.
