@@ -14,6 +14,56 @@
       "at": "2026-09-21T07:26:03.898Z"
     }
   },
+  "demoTab": {
+    "at": "2026-09-21T11:20:43.528Z",
+    "what": "A long-lived tab for the status page to show. Open: cap 1 USDC, at most 0.1 USDC per payment, 30 days, one payee (the demo seller).",
+    "tabId": "tab_9adf442541b2",
+    "address": "0xc96f926A148F77da3828c051aE0ddE0fC667aD27",
+    "owner": "0x1a80c286cAB35b8CA58af33DDfCc7FEAE409aC57",
+    "agent": "0x37948629603d12E2ac060eAbF1CD01AA0939e58f",
+    "payees": [
+      "0x645DD12775906233c9A43c123372118eae0B7065"
+    ],
+    "cap": "1 USDC",
+    "maxPerCall": "0.1 USDC",
+    "expiry": "2026-10-21T11:20:12.000Z",
+    "openTx": {
+      "hash": "0x9552ee6d155bdad57384a7da46e48870c6a1f1246f2a7b6a03628bc0d5c0908c",
+      "explorer": "https://explorer.testnet.arc.io/tx/0x9552ee6d155bdad57384a7da46e48870c6a1f1246f2a7b6a03628bc0d5c0908c",
+      "status": "success",
+      "block": 63250660
+    },
+    "payments": [
+      {
+        "what": "/haiku",
+        "amount": "0.05 USDC",
+        "payTo": "0x645DD12775906233c9A43c123372118eae0B7065",
+        "hash": "0xece7b6725ddd334dc970707580ef99ddcdda0fe6b124e066428eb5200d673270",
+        "explorer": "https://explorer.testnet.arc.io/tx/0xece7b6725ddd334dc970707580ef99ddcdda0fe6b124e066428eb5200d673270",
+        "status": "success",
+        "block": 63250672
+      },
+      {
+        "what": "/line",
+        "amount": "0.01 USDC",
+        "payTo": "0x645DD12775906233c9A43c123372118eae0B7065",
+        "hash": "0xf73abb2d7c134b05c6ab8cfddf410a808c33afb0a018481379ebba5911634e1c",
+        "explorer": "https://explorer.testnet.arc.io/tx/0xf73abb2d7c134b05c6ab8cfddf410a808c33afb0a018481379ebba5911634e1c",
+        "status": "success",
+        "block": 63250682
+      },
+      {
+        "what": "/word",
+        "amount": "0.001 USDC",
+        "payTo": "0x645DD12775906233c9A43c123372118eae0B7065",
+        "hash": "0x39959a6ba36f5ef2433f14daaaa01ac3c9a4bf8f55886024697c02b811f43d64",
+        "explorer": "https://explorer.testnet.arc.io/tx/0x39959a6ba36f5ef2433f14daaaa01ac3c9a4bf8f55886024697c02b811f43d64",
+        "status": "success",
+        "block": 63250691
+      }
+    ],
+    "balanceAfter": "0.939 USDC"
+  },
   "doneTests": {
     "A1": {
       "at": "2026-09-21T07:34:44.763Z",

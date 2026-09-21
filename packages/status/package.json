@@ -1,0 +1,25 @@
+{
+  "name": "@barkeep-arc/status",
+  "private": true,
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "description": "A read-only status page for a Barkeep tab on Arc. No wallet, no keys, no writes.",
+  "scripts": {
+    "record": "node scripts/extract-record.mjs",
+    "dev": "npm run record && vite",
+    "build": "npm run record && tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run --exclude \"**/bundle.test.ts\"",
+    "test:bundle": "vitest run test/bundle.test.ts"
+  },
+  "dependencies": {
+    "viem": "2.56.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "typescript": "~6.0.2",
+    "vite": "^7.1.0",
+    "vitest": "^5.0.0"
+  }
+}

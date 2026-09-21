@@ -1,0 +1,4 @@
+dist/
+public/record.*.json
+.vercel
+.env*
