@@ -36,7 +36,7 @@ Each line has tests in `contracts/test/`, and `contracts/script/mutation-check.p
 
 **Timestamps.** Expiry compares against `block.timestamp`. Arc blocks are about half a second apart and final on commit; a validator skewing a timestamp by seconds moves the expiry by seconds.
 
-**The keys are not the contract's problem, and are the biggest one.** Phase 2 has to keep the owner key away from the process that holds the agent key. On Stellar, `bin/barkeep-mcp` read both; that must not be repeated here.
+**The keys are not the contract's problem, and are the biggest one.** The MCP server holds per-tab agent keys only and has no code that sends a transaction; the owner's key is used by a separate command a human runs (`packages/mcp-server/README.md`), and `test/boundary.test.ts` fails the build if the server's import graph ever reaches it. On Stellar, `bin/barkeep-mcp` read both keys. The limit of the fix: both programs run as the same user, so this is separation by process and code, not by the operating system. An agent key on disk is as safe as the account it is stored under, and what it can lose is one tab.
 
 ## Design decisions worth a reviewer's time
 

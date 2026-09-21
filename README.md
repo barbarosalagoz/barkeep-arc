@@ -10,12 +10,12 @@ Unaudited. Testnet work in progress. Nothing here has been deployed to mainnet.
 
 ## Status
 
-Phase 1 of 5: the contracts, their tests and the static analysis. No MCP server yet, no deployment yet.
+Phases 1 and 2 of 5: the contracts, and the MCP server with the owner's command line. Nothing is deployed yet.
 
 | Phase | What | State |
 |---|---|---|
 | 1 | Contracts, Foundry tests, Slither, graph review | done, see [docs/SECURITY.md](docs/SECURITY.md) |
-| 2 | MCP server (`open_tab`, `pay_and_fetch`, `tab_status`, `close_tab`) and the Arc adapter | not started |
+| 2 | MCP server (`open_tab`, `pay_and_fetch`, `tab_status`, `close_tab`), the Arc adapter, the owner CLI | done, see [packages/mcp-server](packages/mcp-server/README.md) |
 | 3 | Testnet done-tests A1 to A6, hashes in `deployments/arc-testnet.json` | not started |
 | 4 | README, SECURITY.md, docs | not started |
 | 5 | Mainnet factory, one demo tab, one real payment | not started |
