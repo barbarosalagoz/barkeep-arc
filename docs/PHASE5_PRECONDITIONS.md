@@ -114,7 +114,19 @@ Observed first-hand by the repository's owner, in the logged-in Binance TR app, 
 - The withdrawal did not go out. Binance TR put it on a 48-hour security hold, as the first withdrawal after a purchase. Nothing was sent. I confirmed on chain that the destination held nothing on Arc mainnet afterwards, balance 0 and nonce 0, and its key was destroyed unused.
 - The flow asks three things before it will queue the transfer: whether the destination is a private wallet or another service provider (VASP), who owns the wallet, and a free-text purpose. The purpose field accepts only English or Turkish characters.
 
-How this sits next to the rule quoted under "What Turkish rules add": the communiqué says at least 48 hours after the purchase, and at least 72 for an account's first crypto withdrawal. What was observed is a 48-hour hold. I do not know whether this account had withdrawn before, so I cannot say which of the two periods Binance TR applied, only that the hold is real and is measured in days. Phase 5 was stopped for it and resumes on 23 September 2026 with a fresh key.
+How this sits next to the rule quoted under "What Turkish rules add": the communiqué says at least 48 hours after the purchase, and at least 72 for an account's first crypto withdrawal. What was observed is a 48-hour hold. I do not know whether this account had withdrawn before, so I cannot say which of the two periods Binance TR applied, only that the hold is real and is measured in days. Phase 5 was stopped for it. The attempt to resume on 23 September was stopped by a different exchange rule, recorded next.
+
+
+### Why the second attempt did not fund either, 2026-09-23
+
+Observed first-hand by the repository's owner in the logged-in Binance TR app, while attempting the second mainnet funding. I did not see the screens; this is his account of them. Neither rule below is in the public configuration this file quotes above, and I have found no Binance TR page stating either, so both stand on the owner's observation alone.
+
+- Crypto withdrawals are disabled for 15 hours after a TRY deposit. The hold is on the account, not on a particular coin or network, so the Arc route is shut for that window whatever the balance says.
+- TRY withdrawals are locked to the IBAN the money came from for 48 hours, so pulling the deposit back out to a different bank account is not a way around the wait either.
+
+This is a different clock from the one on 21 September. That was a 48-hour hold on the first withdrawal after a purchase, measured from the purchase. This one is 15 hours measured from the fiat deposit, and it fires before any crypto is bought. Two holds can therefore run in sequence: deposit TRY, wait out the 15 hours, buy, then wait out the 48 or 72 hours of the MASAK communiqué. Plan the funding around the sum of them, not the larger one.
+
+Nothing was sent on 23 September. The mainnet owner key generated that day was read on chain first, at balance 0 and nonce 0 on chain 5042, then destroyed unused, as on 21 September. Phase 5 resumes on the afternoon of 24 September 2026 with a fresh key.
 
 
 ### CCTP
@@ -183,5 +195,5 @@ Taken by the repository's owner on 2026-09-21. They narrow what phase 5 is.
 2. Only if keyless `/settle` fails: decide the entity, create the Console account, find out what it requires for a `LIVE_API_KEY`, and only then bind a `payTo`.
 3. Make the first mainnet payment the smallest amount we intend to support, to find the minimum.
 4. Get the payments question under "What Turkish rules add" answered by someone qualified. Until it is, the payer and the seller are both the owner's, and nobody else is paid.
-5. Fund the mainnet owner address as above, and start the waiting period early: it is two or three days. The first attempt, on 2026-09-21, ran into exactly this. Generate the owner key only once the exchange is ready to send, so that no funded-looking address sits unused.
+5. Fund the mainnet owner address as above, and start the waiting period early: it is two or three days, and a TRY deposit adds 15 hours in front of that. The attempts on 2026-09-21 and 2026-09-23 each ran into one of these holds. Generate the owner key only once the exchange is ready to send, so that no funded-looking address sits unused; on both days the key was generated, read on chain and destroyed the same session, which is what that rule is for.
 6. Keep the fallback in mind: the stock `@x402/evm` facilitator, self-hosted, settled the same signatures on Testnet and needs nothing from Circle but a relayer holding a little USDC for gas.
