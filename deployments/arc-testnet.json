@@ -1015,5 +1015,41 @@
     "lastPaymentStarted": "2026-09-21T07:44:37.390Z",
     "latestValidBefore": "2026-09-21T07:45:37Z",
     "why": "Each was an EIP-3009 authorization USDC has already consumed, and all were past validBefore, so none could be used again. They were kept only so a lost answer could be recovered by re-sending the same signature; once settled that need is over."
+  },
+  "keysLost": {
+    "recordedAt": "2026-09-22",
+    "lostOn": "2026-09-21",
+    "what": "The Mac that held ~/.local/state/barkeep-arc was wiped before its local state was copied. There is no backup. The Testnet deployer key, the relayer key, the demo seller key and the live demo tab's agent key are gone, along with the MCP server's local state (tab records, payment records).",
+    "lost": {
+      "testnetDeployer": "0x1a80c286cAB35b8CA58af33DDfCc7FEAE409aC57",
+      "relayer": "address never recorded in this repository; it signed nothing that is in this record except as the outsider in the done-tests",
+      "demoSeller": "0x645DD12775906233c9A43c123372118eae0B7065",
+      "demoTabAgent": "0x37948629603d12E2ac060eAbF1CD01AA0939e58f"
+    },
+    "consequences": [
+      "Tab.close() is owner-only, so no tab owned by 0x1a80c286cAB35b8CA58af33DDfCc7FEAE409aC57 can be closed again. Only the demo tab still holds money.",
+      "The demo tab can make no further payment (its agent key is lost) and cannot be swept. Its 0.939 USDC stays in it for good. It expires 2026-10-21T11:20:12Z.",
+      "The 18.54538 USDC at the deployer address and the 0.436 USDC at the demo seller address cannot be moved.",
+      "All of it is Testnet USDC from the faucet. Nothing on mainnet was ever funded.",
+      "The TabFactory has no owner and no admin function, so it is unaffected and a new owner key can open tabs through it.",
+      "Everything already recorded in this file stays valid: it is on chain and can be re-read by anyone."
+    ],
+    "readAtBlock": 63320093,
+    "tabsTheFactoryOpenedForThisOwner": [
+      { "tab": "0x3eb744131c1c1f7e2e04c683e5ae9b8df3246005", "openedAtBlock": 63223174, "cap": "0.5 USDC", "balance": "0 USDC" },
+      { "tab": "0xc9c05f7237a51953cab0d505c33942a9e41cc9b5", "openedAtBlock": 63223451, "cap": "0.05 USDC", "balance": "0 USDC" },
+      { "tab": "0x95C704A54729170edc28fd7E2927627CDe1fd020", "openedAtBlock": 63223816, "cap": "0.5 USDC", "balance": "0 USDC" },
+      { "tab": "0xd6e319557c583f350182766ff5862817d9f636c1", "openedAtBlock": 63225052, "cap": "0.05 USDC", "balance": "0 USDC" },
+      { "tab": "0xc96f926A148F77da3828c051aE0ddE0fC667aD27", "openedAtBlock": 63250660, "cap": "1 USDC", "balance": "0.939 USDC", "note": "the demo tab" }
+    ],
+    "tabsNote": "Every TabOpened event the factory has emitted, from its deploy block 63222797 to block 63320093: five, all with this owner. Balances are USDC.balanceOf(tab) at block 63320093.",
+    "gapBetweenTestnetMdAndTheChain": {
+      "docSays": "19.5506 USDC after phase 3",
+      "chainSays": "18.545380375 USDC at block 63320093 (nonce 23)",
+      "difference": "1.00522285 USDC",
+      "explanation": "Opening the demo tab, after docs/TESTNET.md's cost paragraph was written. Deployer balance 19.550603225 at block 63250000 (nonce 21); 19.549217275 after the approve (nonce 22, fee 0.00138595); 18.545380375 after the open in block 63250660 (nonce 23: 1 USDC into the tab, fee 0.0038369). No transaction from the deployer since.",
+      "whereTheOneUsdcIs": "0.939 USDC still in the demo tab; 0.061 USDC paid to the demo seller in the three payments recorded under demoTab. So the difference does sit in the demo tab, apart from 0.00522285 USDC of gas."
+    },
+    "how": "Read-only: eth_getLogs, eth_call, eth_getBalance and eth_getTransactionCount against https://rpc.testnet.arc.io (chain 5042002). No transaction was sent."
   }
 }

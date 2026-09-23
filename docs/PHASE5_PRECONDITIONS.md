@@ -95,7 +95,7 @@ USDC is gas on Arc, which matters twice. USDC that arrives by exchange withdrawa
 
 | Exchange | Arc withdrawal of USDC | Fee / minimum | Source, and who checked |
 |---|---|---|---|
-| Binance TR | enabled in its public configuration | 0.02 / 0.1 USDC | `{"asset":"USDC","network":"ARC","withdrawEnable":1,"withdrawFee":"0.02","withdrawMin":"0.1","txPrefix":"https://explorer.arc.io/tx/"}` from https://www.binance.tr/v1/capital/configs?legalMoney=0. I checked. The logged-in withdrawal screen was not seen, and there is no Binance TR announcement. |
+| Binance TR | enabled in its public configuration | 0.02 / 0.1 USDC | `{"asset":"USDC","network":"ARC","withdrawEnable":1,"withdrawFee":"0.02","withdrawMin":"0.1","txPrefix":"https://explorer.arc.io/tx/"}` from https://www.binance.tr/v1/capital/configs?legalMoney=0. I checked. The owner saw the logged-in withdrawal screen on 2026-09-21: it offers USDC on the Arc network (below). There is no Binance TR announcement. |
 | Paribu | yes | fee shown only in the app: not stated. Minimum 2 (research pass) | "Arc üzerinden USDC yatırma ve çekme işlemleri, ağın herkese açık ana ağdaki ilk gününden itibaren Paribu'da yapılabiliyor." https://www.paribu.com/blog/haberler/paribu-arcin-lansman-partnerleri-arasinda/ (deposits and withdrawals of USDC on Arc since the network's first public day). I checked the sentence. |
 | Binance (global) | yes | 0.02 / 0.1 | "Binance has completed the integration of USDC (USDC) on the Arc network." Research pass. |
 | OKX | yes | minimum fee 0.0024, minimum 1.1 | "USDC (Arc) withdrawals will open at 4:00 am UTC on September 16, 2026." https://www.okx.com/en-us/help/okx-to-support-usdc-on-the-arc-chain Research pass. OKX TR: not verified. |
@@ -105,6 +105,29 @@ USDC is gas on Arc, which matters twice. USDC that arrives by exchange withdrawa
 | Coinbase | no | | Arc's own launch post: "Coinbase and others will be live on Arc soon." https://www.arc.io/blog/arc-economic-os-internet |
 | BtcTurk, Bitexen, Icrypex | no | | BtcTurk has a channel named `ARC20USDC`, and it is AVAX C-Chain, not Arc. Research pass. |
 | MEXC, Gate | not verified | | |
+
+### What a withdrawal from Binance TR actually asked for, 2026-09-21
+
+Observed first-hand by the repository's owner, in the logged-in Binance TR app, while attempting the first mainnet funding. I did not see the screens; this is his account of them.
+
+- The withdrawal screen offers USDC on the Arc network. That settles the one thing the public configuration could not: the option really is there.
+- The withdrawal did not go out. Binance TR put it on a 48-hour security hold, as the first withdrawal after a purchase. Nothing was sent. I confirmed on chain that the destination held nothing on Arc mainnet afterwards, balance 0 and nonce 0, and its key was destroyed unused.
+- The flow asks three things before it will queue the transfer: whether the destination is a private wallet or another service provider (VASP), who owns the wallet, and a free-text purpose. The purpose field accepts only English or Turkish characters.
+
+How this sits next to the rule quoted under "What Turkish rules add": the communiqué says at least 48 hours after the purchase, and at least 72 for an account's first crypto withdrawal. What was observed is a 48-hour hold. I do not know whether this account had withdrawn before, so I cannot say which of the two periods Binance TR applied, only that the hold is real and is measured in days. Phase 5 was stopped for it. The attempt to resume on 23 September was stopped by a different exchange rule, recorded next.
+
+
+### Why the second attempt did not fund either, 2026-09-23
+
+Observed first-hand by the repository's owner in the logged-in Binance TR app, while attempting the second mainnet funding. I did not see the screens; this is his account of them. Neither rule below is in the public configuration this file quotes above, and I have found no Binance TR page stating either, so both stand on the owner's observation alone.
+
+- Crypto withdrawals are disabled for 15 hours after a TRY deposit. The hold is on the account, not on a particular coin or network, so the Arc route is shut for that window whatever the balance says.
+- TRY withdrawals are locked to the IBAN the money came from for 48 hours, so pulling the deposit back out to a different bank account is not a way around the wait either.
+
+This is a different clock from the one on 21 September. That was a 48-hour hold on the first withdrawal after a purchase, measured from the purchase. This one is 15 hours measured from the fiat deposit, and it fires before any crypto is bought. Two holds can therefore run in sequence: deposit TRY, wait out the 15 hours, buy, then wait out the 48 or 72 hours of the MASAK communiqué. Plan the funding around the sum of them, not the larger one.
+
+Nothing was sent on 23 September. The mainnet owner key generated that day was read on chain first, at balance 0 and nonce 0 on chain 5042, then destroyed unused, as on 21 September. Phase 5 resumes on the afternoon of 24 September 2026 with a fresh key.
+
 
 ### CCTP
 
@@ -156,7 +179,7 @@ From the research pass, quoting the Official Gazette. I have not read these inst
 1. Buy USDC on Binance TR or Paribu by bank transfer, wait out the 48 or 72 hours, and withdraw on the Arc network to the owner address. Binance TR's public configuration says 0.02 USDC, minimum 0.1. It arrives as gas. A deployment of this factory cost 0.0346 USDC on Testnet at 20 gwei; mainnet's live gas price was 20.08 gwei.
 2. If Arc is not offered on the withdrawal screen after all: withdraw on Avalanche C-Chain or Polygon (Binance TR 0.056 and 0.12 USDC) and bridge with Across or bridge.usdc.com, both of which deliver without needing gas on Arc. This route also needs a little native gas on the source chain, which is a second purchase and the real nuisance of it.
 
-Total cost either way is well under one USDC. What none of this establishes: that the Binance TR screen really offers Arc, Paribu's fee, how each exchange runs the 48 and 72 hour clocks, and whether any bridge completes for a wallet and an IP address in Türkiye.
+Total cost either way is well under one USDC. What none of this establishes: that a Binance TR withdrawal on Arc actually arrives (the screen offers it; the first attempt was held, not sent), Paribu's fee, how each exchange runs the 48 and 72 hour clocks beyond the one hold observed, and whether any bridge completes for a wallet and an IP address in Türkiye.
 
 ## Decisions already taken for phase 5
 
@@ -172,5 +195,5 @@ Taken by the repository's owner on 2026-09-21. They narrow what phase 5 is.
 2. Only if keyless `/settle` fails: decide the entity, create the Console account, find out what it requires for a `LIVE_API_KEY`, and only then bind a `payTo`.
 3. Make the first mainnet payment the smallest amount we intend to support, to find the minimum.
 4. Get the payments question under "What Turkish rules add" answered by someone qualified. Until it is, the payer and the seller are both the owner's, and nobody else is paid.
-5. Fund the mainnet owner address as above, and start the waiting period early: it is two or three days.
+5. Fund the mainnet owner address as above, and start the waiting period early: it is two or three days, and a TRY deposit adds 15 hours in front of that. The attempts on 2026-09-21 and 2026-09-23 each ran into one of these holds. Generate the owner key only once the exchange is ready to send, so that no funded-looking address sits unused; on both days the key was generated, read on chain and destroyed the same session, which is what that rule is for.
 6. Keep the fallback in mind: the stock `@x402/evm` facilitator, self-hosted, settled the same signatures on Testnet and needs nothing from Circle but a relayer holding a little USDC for gas.

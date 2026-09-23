@@ -41,6 +41,35 @@ The first full run is kept in the record as `earlierRun`. Its A3 asked Circle to
 
 Deploying the factory cost 0.0346 USDC. Opening a tab costs about 0.005 USDC (approve plus open), closing about 0.002. Circle's relayer paid for every settlement. The whole of phase 3, two full runs and 179 settlements, took the owner from 20 to 19.5506 USDC: 0.375 went to the demo seller as payments and about 0.075 was gas, the factory included.
 
+## 2026-09-22: the Testnet keys are lost
+
+On 2026-09-21 the Mac that held `~/.local/state/barkeep-arc` was wiped before its local state was copied. There is no backup. Gone with it: the Testnet deployer key (`0x1a80c286cAB35b8CA58af33DDfCc7FEAE409aC57`), the relayer key (its address was never recorded here), the demo seller key (`0x645DD12775906233c9A43c123372118eae0B7065`), the live demo tab's agent key (`0x37948629603d12E2ac060eAbF1CD01AA0939e58f`), and the MCP server's local tab and payment records.
+
+What follows from that:
+
+- `Tab.close()` is owner-only, so no tab owned by `0x1a80…aC57` can be closed again. Only the demo tab still holds money.
+- The demo tab `0xc96f926A148F77da3828c051aE0ddE0fC667aD27` can make no further payment and cannot be swept. Its 0.939 USDC stays in it for good. It expires on 2026-10-21.
+- The 18.54538 USDC at the deployer address and the 0.436 USDC at the demo seller address cannot be moved.
+- All of it is faucet USDC on Testnet. Nothing on mainnet was ever funded.
+- The TabFactory has no owner and no admin function. It is unaffected, and a new owner key can open tabs through it.
+- Everything recorded above and in `deployments/arc-testnet.json` stays valid. It is on chain and anyone can read it back.
+
+### The gap between this document and the chain
+
+The cost paragraph above ends with the owner at 19.5506 USDC. At block 63320093 the chain says 18.545380375 USDC, nonce 23: 1.00522285 USDC less. That is the demo tab, opened after that paragraph was written. The deployer held 19.550603225 USDC at block 63250000 (nonce 21), 19.549217275 after the approve (fee 0.00138595), and 18.545380375 after the open in block 63250660 (1 USDC into the tab, fee 0.0038369). It has sent nothing since. Of that 1 USDC, 0.939 is still in the demo tab and 0.061 went to the demo seller in the three payments recorded under `demoTab`. So the difference sits in the demo tab, apart from 0.00522285 USDC of gas.
+
+Every tab the factory has opened, from its deploy block to block 63320093 (five `TabOpened` events, all with this owner), and what each held at that block:
+
+| Tab | Opened at block | Cap | Balance |
+|---|---|---|---|
+| `0x3eb744131c1c1f7e2e04c683e5ae9b8df3246005` | 63223174 | 0.5 USDC | 0 |
+| `0xc9c05f7237a51953cab0d505c33942a9e41cc9b5` | 63223451 | 0.05 USDC | 0 |
+| `0x95C704A54729170edc28fd7E2927627CDe1fd020` | 63223816 | 0.5 USDC | 0 |
+| `0xd6e319557c583f350182766ff5862817d9f636c1` | 63225052 | 0.05 USDC | 0 |
+| `0xc96f926A148F77da3828c051aE0ddE0fC667aD27` (the demo tab) | 63250660 | 1 USDC | 0.939 USDC |
+
+These were read with `eth_getLogs`, `eth_call`, `eth_getBalance` and `eth_getTransactionCount` against the public Testnet RPC. No transaction was sent. The record is `keysLost` in `deployments/arc-testnet.json`.
+
 ## Run it
 
 ```sh

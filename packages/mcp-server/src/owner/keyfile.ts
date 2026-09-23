@@ -11,12 +11,12 @@
  * server, has no tool that reaches it.
  */
 
-import { readFileSync, statSync } from "node:fs";
+import { chmodSync, closeSync, existsSync, mkdirSync, openSync, readFileSync, statSync, writeSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 
 import type { Hex, LocalAccount } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
+import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 
 import type { NetworkName } from "../network.ts";
 
@@ -40,3 +40,30 @@ export function namedAccount(name: string): LocalAccount {
 }
 
 export const ownerAccount = (net: NetworkName): LocalAccount => namedAccount(process.env.BARKEEP_ARC_OWNER_KEY_NAME ?? DEFAULT_KEY_NAME[net]);
+
+/**
+ * Makes a new key under `name` and returns its ADDRESS. The key itself goes to the file and nowhere else: not to
+ * stdout, not to a log, not into the return value. It never replaces a key that is already there, because a replaced
+ * key is an address nobody can spend from again.
+ */
+export function generateNamedKey(name: string): { address: `0x${string}`; file: string } {
+  if (!/^[A-Za-z][A-Za-z0-9]{2,40}$/.test(name)) throw new Error(`key names are letters and digits, 3 to 41 characters: "${name}"`);
+
+  const file = keysFile();
+  mkdirSync(dirname(file), { recursive: true, mode: 0o700 });
+  const existing = existsSync(file) ? (JSON.parse(readFileSync(file, "utf8")) as Record<string, unknown>) : {};
+  if (name in existing) throw new Error(`${file} already has a key named "${name}"; it will not be replaced`);
+
+  const privateKey = generatePrivateKey();
+  const address = privateKeyToAccount(privateKey).address;
+  const next = `${JSON.stringify({ ...existing, [name]: { address, privateKey, createdAt: new Date().toISOString() } }, null, 2)}\n`;
+
+  const fd = openSync(file, "w", 0o600);
+  try {
+    writeSync(fd, next);
+  } finally {
+    closeSync(fd);
+  }
+  chmodSync(file, 0o600);
+  return { address, file };
+}
