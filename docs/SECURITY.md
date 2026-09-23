@@ -1,8 +1,22 @@
-<!-- Draft written by Claude for the author's review. Phase 1 only: contracts. The MCP server, keys in use and deployment get their sections in later phases. -->
+<!-- Draft written by Claude for the author's review. Facts and structure first; the prose is his to rewrite. -->
 
 # Security
 
-Unaudited. Nobody other than the author and the tools below has reviewed these contracts. Do not put in a tab more than you are prepared to lose.
+Unaudited. Nobody other than the author and the tools below has reviewed these contracts. Do not put in a tab more than you are prepared to lose. Arc Testnet only; nothing is on mainnet.
+
+This file covers the contracts, the MCP server and its keys, what was shown on Testnet, and what was not. How the pieces fit is in [HOW_IT_WORKS.md](HOW_IT_WORKS.md).
+
+## What can go wrong, and what bounds it
+
+| If this fails | What an attacker gets | What bounds it |
+|---|---|---|
+| The agent is jailbroken or confused | It asks the server to pay | The tab's terms on chain: listed payees, per-call maximum, expiry, balance. Each money tool is also marked `requiresUserInteraction`, so Claude Code asks the human before each call |
+| The MCP server is buggy or replaced | The agent keys it holds, so every open tab's remaining balance, to those tabs' listed payees only | The same terms. It has no owner key and no code that sends a transaction (`packages/mcp-server/test/boundary.test.ts`) |
+| An agent key file is read by something else on the machine | One tab's remaining balance, to its listed payees | The same terms. `close_tab` destroys the key; the owner's `close` ends it on chain |
+| The owner's key is taken | Everything the owner holds, and every tab's balance through `close()` | Nothing here. It is an ordinary key in a 600-mode file; it is as safe as the account it is stored under |
+| A seller lies about settlement | At worst one payment counted as unpaid | `pay_and_fetch` reads the chain before believing a success or a refusal, and never signs twice for one request |
+| A listed payee is hostile | Up to the tab's balance, at the per-call maximum each time, as fast as it can get the agent to pay | The owner chose the list. The contract cannot rate-limit (below) |
+| USDC is paused, upgraded, or blocklists an address | Payments stop; a sweep may fail | `close()` still revokes the agent. If USDC's EIP-712 domain changed, the tab would stop approving anything, which is the safe direction |
 
 ## What the contract promises
 
@@ -65,9 +79,23 @@ What it found on the first run, and what happened:
 | `timestamp` | Low | `Tab.isValidSignature`, `TabFactory.openTab` | Expiry is a timestamp by design. See "Timestamps" above. Left. |
 | `naming-convention` | Informational | `SELF`, `IMPLEMENTATION` | Immutables in capitals, which `forge lint` asks for. Left. |
 
+## The server and its keys
+
+Two programs. `bin/barkeep-arc-mcp` holds per-tab agent keys it makes itself (`src/agentKeys.ts`: one file per tab, mode 600, in a mode-700 directory; `destroy` overwrites then removes). `bin/barkeep-arc-owner` is the only program that reads the owner's key, and a human runs it. `test/boundary.test.ts` walks the server's import graph and fails if it reaches `src/owner/`, names the key file, turns a private key into an account anywhere but `agentKeys.ts`, or contains a call that writes to the chain.
+
+What the server writes to disk: the tabs it asked for, the bill, and one record per payment request. Tests scan those files for key material. A payment record holds the signed `PAYMENT-SIGNATURE` header only while the outcome is open, so that a lost answer can be recovered by sending the same signature again; it is dropped when the payment settles (`test/pay.test.ts`). The 179 headers left behind by the Testnet runs, before that rule existed, were all consumed and expired, and were removed; `deployments/arc-testnet.json`, `localStatePruned`, records the count and the dates.
+
+What the server trusts: not its own files. A tab is used only after `chain.ts` `verifiedTab` has checked that its address is what the trusted factory predicts for its terms and owner, and that the terms on chain are the ones the server asked for. The factory's address comes from `deployments/<network>.json` or `BARKEEP_ARC_FACTORY`; whoever can change those can point the server at a factory of their own, which would let them open look-alike tabs but not touch a real one.
+
+No key is ever in the repository. `.github/secret-scan.py` checks every line any commit added, and CI runs its self-test first.
+
+## Shown on Testnet
+
+[TESTNET.md](TESTNET.md): A1 to A8 on Arc Testnet, 2026-09-21, every hash read back from the chain and every refusal also submitted so that its revert is in a block. Circle's Facilitator Service verified and settled a real tab's 213-byte signature, and refused an over-maximum and a non-payee one with `invalid_exact_evm_payload_signature`. Not shown: the demo seller's `settlement_pending` branch against a real pending answer (0 of 179 settlements), and anything on mainnet ([PHASE5_PRECONDITIONS.md](PHASE5_PRECONDITIONS.md)).
+
 ## Tests
 
-71 tests, all against Arc's real USDC at `0x3600…` (never a mock), run three ways: a local `arc-anvil --network arc`, a fork of Arc Testnet, a fork of Arc Mainnet. Forking sends nothing. CI runs the first two; the Mainnet fork is run by hand with the command in `contracts/README.md`.
+Contracts: 71 tests, all against Arc's real USDC at `0x3600…` (never a mock), run three ways: a local `arc-anvil --network arc`, a fork of Arc Testnet, a fork of Arc Mainnet. Forking sends nothing. CI runs the first two; the Mainnet fork is run by hand with the command in `contracts/README.md`.
 
 - Accept paths: `test/Tab.accept.t.sol` (10, one fuzz).
 - Refuse paths: `test/Tab.refuse.t.sol` (23, three fuzz). Where a refusal can be driven through USDC it is asserted twice: the tab returns `0xffffffff`, and USDC reverts with its own message (`FiatTokenV2: invalid signature`, `EIP2612: invalid signature`, `FiatTokenV2: authorization is expired`) and moves nothing. The length, chain-id and fuzz cases are asserted on the tab alone. Every `expectRevert` names the reason it expects.
@@ -75,6 +103,8 @@ What it found on the first run, and what happened:
 - Invariants: `test/invariant/` (16), 128 runs of 64 calls each. A handler tries everything (agent paying well and badly, wrong keys, time passing, owner closing, others trying to close, donations) and judges each attempt against a model written without reference to the contract. Any disagreement in either direction fails `invariant_no_attempt_ever_contradicts_the_model`.
 
 Three mistakes of mine the process caught. The redundant salt, above. The donation action in the first invariant run reverted every time (Arc refuses a transfer that empties a fresh account), so the donations suite was passing while testing nothing; it now has a guard that fails if no donation lands. And the first mutation run looked as if the invariants missed several mutants; that was the script's parser not reading invariant failures, and a by-hand run confirmed they were caught.
+
+The server has 77 unit tests and 7 integration tests; the integration tests run its own code against these contracts and the real USDC on a local Arc chain, through the stock `@x402/evm` facilitator (`packages/mcp-server/README.md`).
 
 Not done: no formal verification, no differential test against a second implementation, no gas-griefing analysis of `isValidSignature` (`arc-forge test --fork-url http://127.0.0.1:8555 --gas-report` shows it between 8k and 17k gas across the suite, which includes a 20-payee tab).
 

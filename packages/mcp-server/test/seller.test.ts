@@ -5,7 +5,7 @@
  * returned none in 179 Testnet settlements. What can be done honestly is to feed
  * it the one real pending answer that was ever recorded, and the real /status
  * answer that resolved it. Both are in fixtures/circle-settlement-pending.recorded.json,
- * which says where they came from and what was not recorded (headers).
+ * which links the commit they came from and says what was not recorded (headers).
  *
  * Tests named "recorded" use those bodies unchanged. Tests named "simulated" use
  * answers I wrote, because no such answer from Circle was ever captured; they
@@ -58,6 +58,7 @@ describe("the fixture", () => {
     expect(recorded.statusCompleted.body).toMatchObject({ status: "completed", paymentId: "72ef4b26-4f82-405a-a01b-bcc5f3964fc7" });
     expect(recorded.provenance.source).toMatch(/doneTests\.circleTrial\.stoppedBy/);
     expect(recorded.provenance.fidelity).toMatch(/headers were not recorded/);
+    expect(recorded.provenance.sourceCommit).toMatch(/^[0-9a-f]{40}$/);
   });
 });
 

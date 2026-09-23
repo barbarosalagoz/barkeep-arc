@@ -3,15 +3,21 @@
     "what": "Circle Facilitator Service answers, recorded on Arc Testnet on 2026-09-20 during the ERC-1271 spike: the one settlement_pending seen in 180 settlements, and the /status answer that later reported it completed.",
     "recordedBy": "spikes/arc-1271/trial.mjs and an inline /status call, in the Barkeep (Stellar) repository",
     "source": "barkeep: deployments/arc-testnet.json, doneTests.circleTrial.stoppedBy (line 1247) and doneTests.circleTrial.pendingReconciled (line 1265)",
-    "sourceIsPublic": false,
-    "sourceNote": "That file is on the unpushed branch arc-1271-spike and has not been committed. These copies are the only published ones.",
+    "sourceIsPublic": true,
+    "sourceNote": "Committed and pushed on 2026-09-21 as the commit above, on branch arc-1271-spike of the Barkeep (Stellar) repository, after an audit for reusable material. The file was recorded on 2026-09-20 and committed unchanged; until then these copies were the only published ones.",
     "fidelity": "HTTP status and the parsed JSON body, exactly as recorded. Response headers were not recorded. Key order is the recorder's, not necessarily Circle's.",
     "onChain": {
       "status": "success",
       "block": 63097935,
       "explorer": "https://explorer.testnet.arc.io/tx/0x503e92a74c7c056704c9f8e4cb1b530f2496c5c0a772739599cbf188cf3f62b5"
     },
-    "payerWasA": "throwaway ERC-1271 contract with a 65-byte signature, not a Barkeep tab"
+    "payerWasA": "throwaway ERC-1271 contract with a 65-byte signature, not a Barkeep tab",
+    "sourceCommit": "34bbf0bc10ae0be40977955d2082db1391118019",
+    "sourceLinks": {
+      "settlePending": "https://github.com/barbarosalagoz/barkeep/blob/34bbf0bc10ae0be40977955d2082db1391118019/deployments/arc-testnet.json#L1247",
+      "statusCompleted": "https://github.com/barbarosalagoz/barkeep/blob/34bbf0bc10ae0be40977955d2082db1391118019/deployments/arc-testnet.json#L1265",
+      "recorder": "https://github.com/barbarosalagoz/barkeep/blob/34bbf0bc10ae0be40977955d2082db1391118019/spikes/arc-1271/trial.mjs"
+    }
   },
   "settlePending": {
     "httpStatus": 200,

@@ -237,6 +237,25 @@ describe("pay_and_fetch", () => {
     expect(seen).toEqual(["sign:pending", `send:${toHex(9, { size: 32 })}`]);
   });
 
+  it("keeps the signed header only while the outcome is open, and drops it once the payment has settled", async () => {
+    const onDisk = (dir: string) => Object.values(JSON.parse(readFileSync(join(dir, "payments.json"), "utf8")) as Record<string, { status: string; paymentHeader?: string }>)[0];
+
+    const direct = setup([challenge([offer()]), paid(TX)], { used: true });
+    await direct.pay(direct.tab, args);
+    expect(onDisk(direct.store.dir)).toMatchObject({ status: "settled" });
+    expect(onDisk(direct.store.dir).paymentHeader).toBeUndefined();
+
+    const state = { used: false };
+    const lost = setup([challenge([offer()]), new Error("socket hang up"), paid(TX)], { used: () => state.used });
+    await expect(lost.pay(lost.tab, args)).rejects.toThrow(/will not be paid again/);
+    expect(onDisk(lost.store.dir).paymentHeader).toBeTypeOf("string"); // still needed: the answer was lost
+
+    state.used = true;
+    await lost.pay(lost.tab, args);
+    expect(onDisk(lost.store.dir)).toMatchObject({ status: "settled" });
+    expect(onDisk(lost.store.dir).paymentHeader).toBeUndefined();
+  });
+
   it("will not pay from a tab that is not open", async () => {
     const t = setup([]);
     await expect(t.pay({ ...t.tab, status: "closed" }, args)).rejects.toThrow(/is closed/);
