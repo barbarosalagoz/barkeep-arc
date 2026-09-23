@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Read-only: the page may talk to Arc's two public RPC endpoints and to nothing else. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://rpc.testnet.arc.io https://rpc.mainnet.arc.io; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="description" content="Read-only status of a Barkeep tab on Arc: an on-chain budget for an AI agent. Unaudited." />
+    <meta name="color-scheme" content="light dark" />
+    <!-- No favicon file: an empty data URL stops the browser asking for one. -->
+    <link rel="icon" href="data:," />
+    <title>Barkeep on Arc: tab status</title>
+  </head>
+  <body>
+    <main id="app">
+      <noscript>This page reads a tab's state from Arc in your browser, so it needs JavaScript. It never asks for a wallet.</noscript>
+    </main>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

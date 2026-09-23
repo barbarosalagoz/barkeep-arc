@@ -110,6 +110,22 @@ jobs:
       - name: open, pay, refuse, recover, close, expire (A1 to A6, rehearsed locally)
         run: ARC_ANVIL_RPC=http://127.0.0.1:8555 npm run test:int
 
+  status-page:
+    name: Status page (read-only boundary, unit tests, built bundle)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Source boundary: imports only its own files and viem, no key path, no wallet or signing API, no innerHTML.
+      - run: npm run test:unit --workspace @barkeep-arc/status
+      - run: npm run build --workspace @barkeep-arc/status
+      # The built output: no way to send a transaction, no key material, no unexpected host, a strict CSP.
+      - run: npm run test:bundle --workspace @barkeep-arc/status
+
   secret-hygiene:
     name: No secrets in version control, now or ever
     runs-on: ubuntu-latest
