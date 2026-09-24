@@ -32,6 +32,19 @@ export interface NetworkConfig {
 export const USDC: Hex = "0x3600000000000000000000000000000000000000";
 
 export const NETWORKS: NetworkConfig[] = [
+  // Mainnet first: it is what the page shows when no ?network= is given.
+  {
+    key: "arc-mainnet",
+    name: "Arc",
+    chainId: 5042,
+    rpcUrl: "https://rpc.mainnet.arc.io",
+    explorer: "https://explorer.arc.io",
+    factory: "0xccebc58dd1f5937b36d5f9f89f0754424f4d443c",
+    tabs: [
+      { label: "Demo tab (closed by its owner)", address: "0xC6640A6D78D7507A928DF7c5122c675C2A41C439", openBlock: 22529271, closeBlock: 22529770 },
+      { label: "Expiry test tab (expired, then closed)", address: "0x1e9202a558FBda7669601c8Ad313337D00f76C9B", openBlock: 22529536, closeBlock: 22529747 },
+    ],
+  },
   {
     key: "arc-testnet",
     name: "Arc Testnet",
@@ -44,16 +57,6 @@ export const NETWORKS: NetworkConfig[] = [
       { label: "Done-tests tab (closed by its owner)", address: "0x95C704A54729170edc28fd7E2927627CDe1fd020", openBlock: 63223816, closeBlock: 63225029 },
       { label: "Expiry test tab (expired, then closed)", address: "0xD6e319557C583f350182766FF5862817D9f636C1", openBlock: 63225052, closeBlock: 63225270 },
     ],
-  },
-  {
-    key: "arc-mainnet",
-    name: "Arc",
-    chainId: 5042,
-    rpcUrl: "https://rpc.mainnet.arc.io",
-    explorer: "https://explorer.arc.io",
-    // Nothing is deployed on mainnet yet.
-    factory: null,
-    tabs: [],
   },
 ];
 

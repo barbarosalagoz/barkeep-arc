@@ -4,7 +4,15 @@
 
 A tab for an AI agent, on Circle's Arc. You tell Claude Code "spend up to 5 USDC, on these two sellers, at most 25 cents a time, for the next hour", once. The agent then pays for what it fetches over x402 without asking again, and cannot go past any of those four limits, because they are not in the agent's prompt or in the server it talks to. They are in a contract that holds the money.
 
-**Unaudited.** Nobody but the author and the tools listed in [docs/SECURITY.md](docs/SECURITY.md) has reviewed the contracts. It runs on Arc Testnet. Nothing here has been deployed to mainnet. Do not put in a tab more than you are prepared to lose.
+**Unaudited.** Nobody but the author and the tools listed in [docs/SECURITY.md](docs/SECURITY.md) has reviewed the contracts. Do not put in a tab more than you are prepared to lose.
+
+**On Arc mainnet since 2026-09-24**, as a demonstration with the author as both payer and seller ([docs/MAINNET.md](docs/MAINNET.md)):
+
+| | |
+|---|---|
+| TabFactory | [`0xccebc58dd1f5937b36d5f9f89f0754424f4d443c`](https://explorer.arc.io/address/0xccebc58dd1f5937b36d5f9f89f0754424f4d443c), the audited build byte for byte |
+| Demo tab | [`0xC6640A6D78D7507A928DF7c5122c675C2A41C439`](https://explorer.arc.io/address/0xC6640A6D78D7507A928DF7c5122c675C2A41C439): 0.5 USDC, at most 0.05 a payment, one payee. Paid three times, refused twice, closed and swept the same day. Live view: [barkeep-arc-status.vercel.app](https://barkeep-arc-status.vercel.app) |
+| A payment Circle settled, keyless | [`0x2b26d71f…f344ba26`](https://explorer.arc.io/tx/0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26): 0.001 USDC, `200 {"success": true}` from Circle's Facilitator Service with no Circle account |
 
 **What this is not.** This is infrastructure software. It does not offer a payment service in Türkiye, and it is not proposed as a payment method for merchants there. Whether using it from Türkiye raises a question under Turkish rules on crypto assets in payments is set out, without an opinion, in [docs/PHASE5_PRECONDITIONS.md](docs/PHASE5_PRECONDITIONS.md#what-turkish-rules-add).
 
@@ -55,7 +63,8 @@ Off chain: 71 contract tests against Arc's real USDC (never a mock), a check tha
 ## What has not
 
 - **No audit.**
-- **Nothing on mainnet.** What Circle's facilitator requires there, and what its documentation does not say (fees, rate limits, a minimum amount), is in [docs/PHASE5_PRECONDITIONS.md](docs/PHASE5_PRECONDITIONS.md).
+- **Mainnet is a demonstration, not a service.** One demo tab and one expiry test tab, both closed; three payments of 0.001 USDC, all to the author's own seller. Circle's keyless trial settled all three; its size, fees and rate limits are still not known ([docs/MAINNET.md](docs/MAINNET.md), [docs/PHASE5_PRECONDITIONS.md](docs/PHASE5_PRECONDITIONS.md)).
+- **The factory's source is not verified on the explorer.** `explorer.arc.io` refuses API calls behind a Cloudflare challenge. The deployed bytecode was compared with the build instead ([docs/MAINNET.md](docs/MAINNET.md#the-factory)).
 - **The demo seller's handling of a pending settlement has never met a real one.** When a payment's outcome is unknown, the buyer's recovery is proven on Testnet, above. The demo seller's own `settlement_pending` branch, which polls Circle's `/status`, has not once run against a real pending answer from Circle in this repository: Circle returned none in 179 Testnet settlements. It is covered by a unit test fed with the one real pending answer I have, recorded during the earlier spike (`packages/mcp-server/test/seller.test.ts`).
 - **Anyone can send USDC to a tab**, and the agent can then spend that too, under the same rules. What you put in is still all you can lose.
 - **A tab does not refill.** When the money is gone or the time is up, you open another.
@@ -88,8 +97,8 @@ The contract tests and the integration tests need Arc Foundry, not upstream Foun
 | 1 | Contracts, tests, Slither, graph review, independent code review | done |
 | 2 | MCP server, the Arc adapter, the owner's command | done |
 | 3 | Testnet done-tests A1 to A8 | done, except that the seller half of A6 could not be provoked |
-| 4 | README, SECURITY.md, docs | this |
-| 5 | Mainnet: factory, one demo tab, one real payment | not started |
+| 4 | README, SECURITY.md, docs | done |
+| 5 | Mainnet: factory, one demo tab, real payments, the refusals | this; [docs/MAINNET.md](docs/MAINNET.md) |
 
 ## Licence
 

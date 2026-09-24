@@ -2,7 +2,7 @@
 
 # How Barkeep on Arc works
 
-A walkthrough for a developer with no context. It follows one payment from the human agreeing to a tab to the line on the bill, and names the file that does each step. Testnet only so far. The contracts are not audited; [SECURITY.md](SECURITY.md) says what has and has not been checked.
+A walkthrough for a developer with no context. It follows one payment from the human agreeing to a tab to the line on the bill, and names the file that does each step. Shown on Arc Testnet and, as a demonstration, on mainnet ([MAINNET.md](MAINNET.md)). The contracts are not audited; [SECURITY.md](SECURITY.md) says what has and has not been checked.
 
 ## The problem in one paragraph
 

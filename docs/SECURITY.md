@@ -2,7 +2,7 @@
 
 # Security
 
-Unaudited. Nobody other than the author and the tools below has reviewed these contracts. Do not put in a tab more than you are prepared to lose. Arc Testnet only; nothing is on mainnet.
+Unaudited. Nobody other than the author and the tools below has reviewed these contracts. Do not put in a tab more than you are prepared to lose. On Arc mainnet since 2026-09-24 as a demonstration only: [MAINNET.md](MAINNET.md).
 
 This file covers the contracts, the MCP server and its keys, what was shown on Testnet, and what was not. How the pieces fit is in [HOW_IT_WORKS.md](HOW_IT_WORKS.md).
 
@@ -91,7 +91,7 @@ No key is ever in the repository. `.github/secret-scan.py` checks every line any
 
 ## Shown on Testnet
 
-[TESTNET.md](TESTNET.md): A1 to A8 on Arc Testnet, 2026-09-21, every hash read back from the chain and every refusal also submitted so that its revert is in a block. Circle's Facilitator Service verified and settled a real tab's 213-byte signature, and refused an over-maximum and a non-payee one with `invalid_exact_evm_payload_signature`. Not shown: the demo seller's `settlement_pending` branch against a real pending answer (0 of 179 settlements), and anything on mainnet ([PHASE5_PRECONDITIONS.md](PHASE5_PRECONDITIONS.md)).
+[TESTNET.md](TESTNET.md): A1 to A8 on Arc Testnet, 2026-09-21, every hash read back from the chain and every refusal also submitted so that its revert is in a block. Circle's Facilitator Service verified and settled a real tab's 213-byte signature, and refused an over-maximum and a non-payee one with `invalid_exact_evm_payload_signature`. Not shown: the demo seller's `settlement_pending` branch against a real pending answer (0 of 179 settlements), and, on mainnet ([MAINNET.md](MAINNET.md)), that branch again and a payment signed before a close and submitted after it.
 
 ## Tests
 
