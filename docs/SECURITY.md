@@ -104,7 +104,7 @@ Contracts: 71 tests, all against Arc's real USDC at `0x3600…` (never a mock), 
 
 Three mistakes of mine the process caught. The redundant salt, above. The donation action in the first invariant run reverted every time (Arc refuses a transfer that empties a fresh account), so the donations suite was passing while testing nothing; it now has a guard that fails if no donation lands. And the first mutation run looked as if the invariants missed several mutants; that was the script's parser not reading invariant failures, and a by-hand run confirmed they were caught.
 
-The server has 77 unit tests and 7 integration tests; the integration tests run its own code against these contracts and the real USDC on a local Arc chain, through the stock `@x402/evm` facilitator (`packages/mcp-server/README.md`).
+The server has 82 unit tests and 7 integration tests; the integration tests run its own code against these contracts and the real USDC on a local Arc chain, through the stock `@x402/evm` facilitator (`packages/mcp-server/README.md`).
 
 Not done: no formal verification, no differential test against a second implementation, no gas-griefing analysis of `isValidSignature` (`arc-forge test --fork-url http://127.0.0.1:8555 --gas-report` shows it between 8k and 17k gas across the suite, which includes a 20-payee tab).
 

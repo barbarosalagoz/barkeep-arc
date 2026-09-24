@@ -58,7 +58,7 @@ On Arc Testnet, 2026-09-21. TabFactory `0xd7c3e0106ba18e73fc195088e453a370ef9ba9
 | After the owner closed: a payment signed beforehand reverted; balance zero | [`0x9abd1ce7…606164`](https://explorer.testnet.arc.io/tx/0x9abd1ce72afc33bb771687e172597e96aafdf7eb7119f47618dfc9b85d606164), [`0xc9100471…54d99f`](https://explorer.testnet.arc.io/tx/0xc9100471d2175a65fdce1e0b1af0ddb9af7a95590d064efb39b7fd916654d99f) |
 | The seller's answer was lost: the agent asked the chain, paid once, collected with the same signature | [`0xab1179b5…99801e`](https://explorer.testnet.arc.io/tx/0xab1179b52b10494fb741f348d4d7707d39937afb2f0b023ee5d74b1d7a99801e) |
 
-Off chain: 71 contract tests against Arc's real USDC (never a mock), a check that deletes each security rule in turn and requires a test to notice (25 of 25), Slither with no high or medium finding, 77 unit tests for the server, and 7 integration tests that run the server's own code against the real contracts on a local Arc chain. All of it runs in CI.
+Off chain: 71 contract tests against Arc's real USDC (never a mock), a check that deletes each security rule in turn and requires a test to notice (25 of 25), Slither with no high or medium finding, 97 unit tests (82 for the server, 15 for the status page), and 7 integration tests that run the server's own code against the real contracts on a local Arc chain. All of it runs in CI.
 
 ## What has not
 
