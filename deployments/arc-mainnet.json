@@ -1,0 +1,518 @@
+{
+  "network": "arc-mainnet",
+  "chainId": 5042,
+  "explorer": "https://explorer.arc.io",
+  "usdc": "0x3600000000000000000000000000000000000000",
+  "contracts": {
+    "tabFactory": {
+      "address": "0xccebc58dd1f5937b36d5f9f89f0754424f4d443c",
+      "implementation": "0x89B63f2E43dea9014750925C01996D34856B01D2",
+      "deployer": "0xBf48c3C741aFC9FA17C0c83c57123A944B3cDFB6",
+      "deployTx": "0x9dec350174c08215d8b171719adf4aaeed9b2775e77f5fd6b9bfadae69afde26",
+      "explorer": "https://explorer.arc.io/tx/0x9dec350174c08215d8b171719adf4aaeed9b2775e77f5fd6b9bfadae69afde26",
+      "block": 22528992,
+      "at": "2026-09-24T14:05:37.962Z",
+      "gasUsed": "1382103",
+      "effectiveGasPrice": "20000000000",
+      "feeUsdc": 0.02764206,
+      "bytecodeCheck": {
+        "what": "the deploy transaction's input equals the creation bytecode arc-forge builds from main at 584e12f, and the runtime code at the factory and at its Tab implementation equals the build's deployedBytecode byte for byte outside the immutables, which each hold the implementation's address. The same build matches the Testnet factory deployed on 2026-09-21.",
+        "builtFrom": "584e12f",
+        "compiler": "solc 0.8.30, optimizer 200 runs, evm prague, bytecode_hash none (contracts/foundry.toml)",
+        "deployInputEqualsBuild": true,
+        "TabFactory": "2355 bytes, 3 immutable slots, MATCH",
+        "Tab": "3637 bytes, 2 immutable slots, MATCH",
+        "explorerSource": "not verified: explorer.arc.io answers every API request, forge verify-contract's included, with a Cloudflare challenge page"
+      }
+    }
+  },
+  "doneTests": {
+    "A1": {
+      "at": "2026-09-24T14:08:48.850Z",
+      "what": "open a tab, fund it, the agent pays its listed payee through Circle's Facilitator Service (keyless trial); tab_status shows the balance drop",
+      "tabId": "tab_ce19336a2e7d",
+      "tab": "0xC6640A6D78D7507A928DF7c5122c675C2A41C439",
+      "owner": "0xBf48c3C741aFC9FA17C0c83c57123A944B3cDFB6",
+      "agent": "0x579FEB49E7fAC829EEB0012Ce1dc4d14e2988D0d",
+      "payees": [
+        "0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8"
+      ],
+      "cap": "0.5 USDC",
+      "maxPerCall": "0.05 USDC",
+      "approveTx": {
+        "hash": "0x0ab60bf87d7035b99d8ddd8987fba0fe6a7191ee9ba1593327daa93bd37af0bf",
+        "explorer": "https://explorer.arc.io/tx/0x0ab60bf87d7035b99d8ddd8987fba0fe6a7191ee9ba1593327daa93bd37af0bf",
+        "status": "success",
+        "block": 22529262,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0x095ea7b3",
+        "gasUsed": "55438",
+        "feeUsdc": 0.00110876
+      },
+      "openTx": {
+        "hash": "0x06de05715db9817a55c9556f533036feadbd6ea23ab85e12a75d78ce4eaaa56f",
+        "explorer": "https://explorer.arc.io/tx/0x06de05715db9817a55c9556f533036feadbd6ea23ab85e12a75d78ce4eaaa56f",
+        "status": "success",
+        "block": 22529271,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0xccebc58dd1f5937b36d5f9f89f0754424f4d443c",
+        "selector": "0x2b3d6a0c",
+        "gasUsed": "153464",
+        "feeUsdc": 0.00306928
+      },
+      "payment": {
+        "amount": "0.001 USDC",
+        "payTo": "0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8",
+        "tx": {
+          "hash": "0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+          "explorer": "https://explorer.arc.io/tx/0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+          "status": "success",
+          "block": 22529297,
+          "from": "0xa48381b79bba70ce4e98bcf71db43bad6ee1ad30",
+          "to": "0x3600000000000000000000000000000000000000",
+          "selector": "0xcf092995",
+          "gasUsed": "130603",
+          "feeUsdc": 0.0028079645
+        },
+        "circleVerify": {
+          "httpStatus": 200,
+          "requestId": "c711f454416b7227d4d969e5c6f87f9b",
+          "body": {
+            "isValid": true,
+            "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439"
+          }
+        },
+        "circleSettle": {
+          "httpStatus": 200,
+          "requestId": "17aae4477fe950b5ed4074349fcc077d",
+          "body": {
+            "success": true,
+            "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439",
+            "transaction": "0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+            "network": "eip155:5042",
+            "amount": "1000"
+          }
+        }
+      },
+      "note": "The same payment as payments[0]; kept here under A1 so the record reads like deployments/arc-testnet.json."
+    },
+    "A2": {
+      "at": "2026-09-24T14:09:22.220Z",
+      "what": "above maxPerCall (0.050001 USDC on a 0.05 tab): refused before signing; forced, Circle's verify refuses it, isValidSignature says no, and the submitted transfer reverts",
+      "beforeSigning": "This tab cannot make this payment: the price, 0.050001 USDC, is above this tab's per-call maximum of 0.05 USDC. The tab contract enforces the same rule on chain. Nothing was signed or paid.",
+      "circleVerify": {
+        "httpStatus": 200,
+        "requestId": "a165a03664d8b53256d2962658ebf6e6",
+        "body": {
+          "isValid": false,
+          "invalidReason": "invalid_exact_evm_payload_signature",
+          "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439"
+        }
+      },
+      "sellerAnswer": {
+        "httpStatus": 402,
+        "body": {
+          "error": "invalid_exact_evm_payload_signature"
+        }
+      },
+      "tabAnswer": "0xffffffff",
+      "revertReason": "FiatTokenV2: invalid signature",
+      "tx": {
+        "hash": "0x332409fb88ca5a3bfab25917ed7c38872ad6b46e4ede71a6fb1feb4bf3614e27",
+        "explorer": "https://explorer.arc.io/tx/0x332409fb88ca5a3bfab25917ed7c38872ad6b46e4ede71a6fb1feb4bf3614e27",
+        "status": "reverted",
+        "block": 22529369,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "63957",
+        "feeUsdc": 0.00127914
+      },
+      "balanceBefore": "0.497 USDC",
+      "balanceAfter": "0.497 USDC"
+    },
+    "A3": {
+      "at": "2026-09-24T14:09:27.759Z",
+      "what": "a non-payee (mainnetOutsider, the owner's second seller key): refused before signing; forced, Circle's verify refuses it, isValidSignature says no, the submitted transfer reverts",
+      "beforeSigning": "This tab cannot make this payment: 0x78Dc7c742fE68Db72Bb7B7195bAE74D182eae614 is not one of this tab's payees (0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8). The tab contract enforces the same rule on chain. Nothing was signed or paid.",
+      "circleVerify": {
+        "httpStatus": 200,
+        "requestId": "b6980aa29a6358abf01c1796e5cc43a3",
+        "body": {
+          "isValid": false,
+          "invalidReason": "invalid_exact_evm_payload_signature",
+          "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439"
+        }
+      },
+      "sellerAnswer": {
+        "httpStatus": 402,
+        "body": {
+          "error": "invalid_exact_evm_payload_signature"
+        }
+      },
+      "tabAnswer": "0xffffffff",
+      "revertReason": "FiatTokenV2: invalid signature",
+      "tx": {
+        "hash": "0xe2a02e84b920dc6ecd795697e48f143c3f4fe49bf0c564e515f5b48705a14c50",
+        "explorer": "https://explorer.arc.io/tx/0xe2a02e84b920dc6ecd795697e48f143c3f4fe49bf0c564e515f5b48705a14c50",
+        "status": "reverted",
+        "block": 22529373,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "64243",
+        "feeUsdc": 0.00128486
+      },
+      "outsiderBalanceBefore": "0 USDC",
+      "outsiderBalanceAfter": "0 USDC",
+      "tabBalance": "0.497 USDC"
+    },
+    "A4": {
+      "at": "2026-09-24T14:12:34.332Z",
+      "what": "after expiry, on a second short tab (cap 0.01 USDC, 100 seconds): refused before signing; the tab answers no to a signature it accepted while open; the submitted transfer reverts; the owner still gets the money back",
+      "tabId": "tab_67a5abb347b4",
+      "tab": "0x1e9202a558FBda7669601c8Ad313337D00f76C9B",
+      "approveTx": {
+        "hash": "0x8cbeeaedb5cc782e7043c2b9443656699846303b7ed89c6155008eae3ea1e0d9",
+        "explorer": "https://explorer.arc.io/tx/0x8cbeeaedb5cc782e7043c2b9443656699846303b7ed89c6155008eae3ea1e0d9",
+        "status": "success",
+        "block": 22529535,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0x095ea7b3",
+        "gasUsed": "55426",
+        "feeUsdc": 0.00110852
+      },
+      "openTx": {
+        "hash": "0x710e24914e3652e157209e786b44f371d3a609f85e845f0463a4ac13c2e5248d",
+        "explorer": "https://explorer.arc.io/tx/0x710e24914e3652e157209e786b44f371d3a609f85e845f0463a4ac13c2e5248d",
+        "status": "success",
+        "block": 22529536,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0xccebc58dd1f5937b36d5f9f89f0754424f4d443c",
+        "selector": "0x2b3d6a0c",
+        "gasUsed": "153452",
+        "feeUsdc": 0.00306904
+      },
+      "expiry": "2026-09-24T14:12:24.000Z",
+      "whileOpen": {
+        "tabAnswer": "0x1626ba7e",
+        "simulation": "would succeed"
+      },
+      "beforeSigning": "This tab cannot make this payment: the tab expired at 2026-09-24T14:12:24.000Z. The tab contract enforces the same rule on chain. Nothing was signed or paid.",
+      "tabAnswerAfterExpiry": "0xffffffff",
+      "revertReason": "FiatTokenV2: authorization is expired",
+      "tx": {
+        "hash": "0x3d966f2090a7ab11ff5209a7071145842217a568b606e9b6522d8d169127242a",
+        "explorer": "https://explorer.arc.io/tx/0x3d966f2090a7ab11ff5209a7071145842217a568b606e9b6522d8d169127242a",
+        "status": "reverted",
+        "block": 22529744,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "35826",
+        "feeUsdc": 0.00071652
+      },
+      "note": "USDC reports its own expiry check first, because the tab only accepts authorizations that die with it (validBefore <= expiry). The tab's answer is read directly above.",
+      "closeTx": {
+        "hash": "0xfb7560550ee9b78629f3544041861c566c3a0e46072dbbf7c3348bd369759c66",
+        "explorer": "https://explorer.arc.io/tx/0xfb7560550ee9b78629f3544041861c566c3a0e46072dbbf7c3348bd369759c66",
+        "status": "success",
+        "block": 22529747,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0x1e9202a558fbda7669601c8ad313337d00f76c9b",
+        "selector": "0x43d726d6",
+        "gasUsed": "79335",
+        "feeUsdc": 0.0015867
+      },
+      "returned": "0.01 USDC",
+      "balance": "0 USDC"
+    },
+    "A5": {
+      "at": "2026-09-24T14:12:46.397Z",
+      "what": "close_tab destroys the agent key; the owner closes on chain and sweeps what is left back",
+      "closeTab": {
+        "tab_id": "tab_ce19336a2e7d",
+        "agent_key": "destroyed: this server can no longer sign a payment from this tab",
+        "on_chain": "still open on chain with 0.497 USDC in it",
+        "next_step": "Closing the contract and returning the money takes the owner's key, which this server does not have. The owner runs: npx barkeep-arc-owner close tab_ce19336a2e7d"
+      },
+      "closeTx": {
+        "hash": "0xa0be0731a74afeb513012204f0106caae8a85b059667c49e1e3f6e0c6b2592bb",
+        "explorer": "https://explorer.arc.io/tx/0xa0be0731a74afeb513012204f0106caae8a85b059667c49e1e3f6e0c6b2592bb",
+        "status": "success",
+        "block": 22529770,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0xc6640a6d78d7507a928df7c5122c675c2a41c439",
+        "selector": "0x43d726d6",
+        "gasUsed": "79335",
+        "feeUsdc": 0.0015867
+      },
+      "swept": true,
+      "returnedToOwner": "0.495413 USDC",
+      "tabBalance": "0 USDC",
+      "status": "closed on chain"
+    }
+  },
+  "demoTab": {
+    "at": "2026-09-24T14:08:33.258Z",
+    "what": "The mainnet demo tab. Cap 0.5 USDC, at most 0.05 USDC per payment, 24 hours, one payee: the demo seller, an address the owner holds the key to.",
+    "tabId": "tab_ce19336a2e7d",
+    "address": "0xC6640A6D78D7507A928DF7c5122c675C2A41C439",
+    "factory": "0xccebC58DD1F5937B36D5f9F89f0754424f4D443c",
+    "owner": "0xBf48c3C741aFC9FA17C0c83c57123A944B3cDFB6",
+    "agent": "0x579FEB49E7fAC829EEB0012Ce1dc4d14e2988D0d",
+    "payees": [
+      "0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8"
+    ],
+    "cap": "0.5 USDC",
+    "maxPerCall": "0.05 USDC",
+    "expiry": "2026-09-25T14:08:26.000Z",
+    "approveTx": {
+      "hash": "0x0ab60bf87d7035b99d8ddd8987fba0fe6a7191ee9ba1593327daa93bd37af0bf",
+      "explorer": "https://explorer.arc.io/tx/0x0ab60bf87d7035b99d8ddd8987fba0fe6a7191ee9ba1593327daa93bd37af0bf",
+      "status": "success",
+      "block": 22529262,
+      "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+      "to": "0x3600000000000000000000000000000000000000",
+      "selector": "0x095ea7b3",
+      "gasUsed": "55438",
+      "feeUsdc": 0.00110876
+    },
+    "openTx": {
+      "hash": "0x06de05715db9817a55c9556f533036feadbd6ea23ab85e12a75d78ce4eaaa56f",
+      "explorer": "https://explorer.arc.io/tx/0x06de05715db9817a55c9556f533036feadbd6ea23ab85e12a75d78ce4eaaa56f",
+      "status": "success",
+      "block": 22529271,
+      "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+      "to": "0xccebc58dd1f5937b36d5f9f89f0754424f4d443c",
+      "selector": "0x2b3d6a0c",
+      "gasUsed": "153464",
+      "feeUsdc": 0.00306928
+    },
+    "balance": "0.5 USDC"
+  },
+  "payments": [
+    {
+      "at": "2026-09-24T14:08:48.850Z",
+      "what": "first payment, the smallest amount that settled",
+      "amount": "0.001 USDC",
+      "facilitator": "https://api.circle.com/v1/facilitator/x402",
+      "auth": "keyless trial (Facilitator-Seller-Proof)",
+      "circle": [
+        {
+          "step": "verify",
+          "answer": {
+            "httpStatus": 200,
+            "requestId": "c711f454416b7227d4d969e5c6f87f9b",
+            "body": {
+              "isValid": true,
+              "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439"
+            }
+          }
+        },
+        {
+          "step": "settle",
+          "answer": {
+            "httpStatus": 200,
+            "requestId": "17aae4477fe950b5ed4074349fcc077d",
+            "body": {
+              "success": true,
+              "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439",
+              "transaction": "0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+              "network": "eip155:5042",
+              "amount": "1000"
+            }
+          }
+        }
+      ],
+      "tx": {
+        "hash": "0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+        "explorer": "https://explorer.arc.io/tx/0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+        "status": "success",
+        "block": 22529297,
+        "from": "0xa48381b79bba70ce4e98bcf71db43bad6ee1ad30",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "130603",
+        "feeUsdc": 0.0028079645
+      },
+      "payTo": "0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8"
+    },
+    {
+      "at": "2026-09-24T14:09:00.641Z",
+      "what": "payment 2",
+      "amount": "0.001 USDC",
+      "payTo": "0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8",
+      "circleSettle": {
+        "httpStatus": 200,
+        "requestId": "5c1c5ed3a54284dbd518f66487b7a723",
+        "body": {
+          "success": true,
+          "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439",
+          "transaction": "0xfcc39bc01a99399c44645cccebe49dec6a8cd44970f6ade0635c0fa5fceb43fb",
+          "network": "eip155:5042",
+          "amount": "1000"
+        }
+      },
+      "tx": {
+        "hash": "0xfcc39bc01a99399c44645cccebe49dec6a8cd44970f6ade0635c0fa5fceb43fb",
+        "explorer": "https://explorer.arc.io/tx/0xfcc39bc01a99399c44645cccebe49dec6a8cd44970f6ade0635c0fa5fceb43fb",
+        "status": "success",
+        "block": 22529323,
+        "from": "0xa48381b79bba70ce4e98bcf71db43bad6ee1ad30",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "105603",
+        "feeUsdc": 0.00262212249
+      }
+    },
+    {
+      "at": "2026-09-24T14:09:05.498Z",
+      "what": "payment 3",
+      "amount": "0.001 USDC",
+      "payTo": "0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8",
+      "circleSettle": {
+        "httpStatus": 200,
+        "requestId": "9595d365b05ed79d3e22a4c6a4bd7517",
+        "body": {
+          "success": true,
+          "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439",
+          "transaction": "0x210a8dfbaf66880d34fbaaabbf766ee619dd1d382cab7509e816ec534091ae53",
+          "network": "eip155:5042",
+          "amount": "1000"
+        }
+      },
+      "tx": {
+        "hash": "0x210a8dfbaf66880d34fbaaabbf766ee619dd1d382cab7509e816ec534091ae53",
+        "explorer": "https://explorer.arc.io/tx/0x210a8dfbaf66880d34fbaaabbf766ee619dd1d382cab7509e816ec534091ae53",
+        "status": "success",
+        "block": 22529333,
+        "from": "0xa48381b79bba70ce4e98bcf71db43bad6ee1ad30",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "105603",
+        "feeUsdc": 0.0022704645
+      }
+    }
+  ],
+  "firstPaymentAttempts": [
+    {
+      "amount": "0.001 USDC",
+      "facilitator": "https://api.circle.com/v1/facilitator/x402",
+      "auth": "keyless trial (Facilitator-Seller-Proof)",
+      "circle": [
+        {
+          "step": "verify",
+          "answer": {
+            "httpStatus": 200,
+            "requestId": "c711f454416b7227d4d969e5c6f87f9b",
+            "body": {
+              "isValid": true,
+              "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439"
+            }
+          }
+        },
+        {
+          "step": "settle",
+          "answer": {
+            "httpStatus": 200,
+            "requestId": "17aae4477fe950b5ed4074349fcc077d",
+            "body": {
+              "success": true,
+              "payer": "0xc6640a6d78d7507a928df7c5122c675c2a41c439",
+              "transaction": "0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+              "network": "eip155:5042",
+              "amount": "1000"
+            }
+          }
+        }
+      ],
+      "tx": {
+        "hash": "0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+        "explorer": "https://explorer.arc.io/tx/0x2b26d71fda48dcd2eed10b26040858735de4a8a145d64185f44a5e9bf344ba26",
+        "status": "success",
+        "block": 22529297,
+        "from": "0xa48381b79bba70ce4e98bcf71db43bad6ee1ad30",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xcf092995",
+        "gasUsed": "130603",
+        "feeUsdc": 0.0028079645
+      },
+      "payTo": "0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8"
+    }
+  ],
+  "sweeps": [
+    {
+      "at": "2026-09-24T14:17:34.702Z",
+      "from": "mainnetSeller",
+      "fromAddress": "0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8",
+      "to": "0xBf48c3C741aFC9FA17C0c83c57123A944B3cDFB6",
+      "amount": "0.002013 USDC",
+      "tx": {
+        "hash": "0xe81928c499cc2b874a9b2c19beccf7425e67b78b059a6dc7f17506c4f2bcc9be",
+        "explorer": "https://explorer.arc.io/tx/0xe81928c499cc2b874a9b2c19beccf7425e67b78b059a6dc7f17506c4f2bcc9be",
+        "status": "success",
+        "block": 22530341,
+        "from": "0xd3ffdc8dd27f6c19a89ebdd2a9c9f983018bc5b8",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xa9059cbb",
+        "gasUsed": "48938",
+        "feeUsdc": 0.00097876
+      },
+      "dust18": "8240000000000",
+      "toBalance": "2.912211 USDC"
+    },
+    {
+      "at": "2026-09-24T14:19:47.413Z",
+      "from": "mainnetOwner",
+      "fromAddress": "0xBf48c3C741aFC9FA17C0c83c57123A944B3cDFB6",
+      "to": "0x8C307A89B7a66857702476BF350a12a5Af888943",
+      "amount": "2.910707 USDC",
+      "tx": {
+        "hash": "0x7b8d4b27e640c7d72c66b287951d12273ff41dfd0c44fb12f462e234bc5caa5b",
+        "explorer": "https://explorer.arc.io/tx/0x7b8d4b27e640c7d72c66b287951d12273ff41dfd0c44fb12f462e234bc5caa5b",
+        "status": "success",
+        "block": 22530602,
+        "from": "0xbf48c3c741afc9fa17c0c83c57123a944b3cdfb6",
+        "to": "0x3600000000000000000000000000000000000000",
+        "selector": "0xa9059cbb",
+        "gasUsed": "73950",
+        "feeUsdc": 0.001486395
+      },
+      "dust18": "18025000000000",
+      "toBalance": "2.910707 USDC"
+    }
+  ],
+  "balancesAfter": {
+    "at": "2026-09-24T14:20:00Z",
+    "block": 22530627,
+    "what": "every mainnet address this phase used, read from chain after the last transfer. USDC is gas on Arc with 18 decimals and moves as a token with 6; what is left is gas reserved by the estimate and not used, too little to pay for its own transfer.",
+    "addresses": {
+      "owner 0xBf48c3C741aFC9FA17C0c83c57123A944B3cDFB6": "18025000000000 (0.000018025 USDC)",
+      "demo seller 0xD3fFdC8DD27F6c19A89ebdD2a9C9f983018bc5b8": "8240000000000 (0.00000824 USDC)",
+      "outsider 0x78Dc7c742fE68Db72Bb7B7195bAE74D182eae614": "0",
+      "demo tab 0xC6640A6D78D7507A928DF7c5122c675C2A41C439": "0",
+      "demo tab agent 0x579FEB49E7fAC829EEB0012Ce1dc4d14e2988D0d": "0",
+      "expiry tab 0x1e9202a558FBda7669601c8Ad313337D00f76C9B": "0",
+      "expiry tab agent 0x0974C84Ac1bB55f320B4Bf7adf12350CEc82D335": "0"
+    }
+  },
+  "funding": [
+    {
+      "what": "first withdrawal from Binance TR on the Arc network, 0.5 USDC less its 0.02 fee",
+      "amount": "0.48 USDC",
+      "tx": "0xc7ed57bc011696bccd05b956b6ac86f01c014ebdbeba469c6b584d2f9f7c9566",
+      "block": 22527685,
+      "status": "success"
+    },
+    {
+      "what": "second withdrawal from Binance TR on the Arc network, the rest",
+      "amount": "2.47565 USDC",
+      "tx": "0xb3dee41410e42a3e85db7d9ea944ec8cbc202593511bc4720558a04c242c4ff7",
+      "block": 22528868,
+      "status": "success"
+    }
+  ]
+}

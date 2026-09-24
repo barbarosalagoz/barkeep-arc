@@ -2,6 +2,8 @@
 
 # Before mainnet: what Circle's facilitator requires, and how the USDC gets there
 
+**Outcome, 2026-09-24:** phase 5 ran; see [MAINNET.md](MAINNET.md). Keyless `/settle` works on mainnet, and 0.001 USDC settled without a `403`, so any minimum is at or below that. The trial's size, fees and rate limits are still unknown. The payments question under "What Turkish rules add" is still unanswered; the owner accepted that risk, with payer and seller both the owner's.
+
 Read from Circle's documentation on 2026-09-21. Each claim carries the page it came from. Where the documentation is silent, this says so; nothing here is filled in from general knowledge of Circle.
 
 The short version: the documentation says production settlement needs a Circle API key and says almost nothing else. It does not state fees, rate limit numbers, the trial's size, a minimum amount, or what an account must do to get a mainnet key. Those have to be asked of Circle, or found out with a small real payment, before phase 5 depends on them.

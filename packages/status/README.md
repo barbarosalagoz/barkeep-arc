@@ -2,7 +2,7 @@
 
 # @barkeep-arc/status
 
-A read-only status page for a tab. Live, against Arc Testnet: **https://barkeep-arc-status.vercel.app**
+A read-only status page for a tab. Live, against Arc mainnet by default and Arc Testnet with `?network=arc-testnet`: **https://barkeep-arc-status.vercel.app**
 
 It shows a tab's owner, agent, payees, per-call maximum, expiry, whether it is closed, its USDC balance, the payments that settled (from USDC's Transfer events, each linked to the explorer), and the refused attempts from `deployments/<network>.json`, each with the transaction that reverted. As it loads it asks the chain for every one of those transactions and says whether it really reverted.
 
@@ -18,7 +18,7 @@ The same policy is sent as an HTTP header by `vercel.json`, with `frame-ancestor
 
 ## Configuration
 
-`src/config.ts`: for each network a chain id, RPC, explorer, the TabFactory address, and the tabs to show, each with the block it was opened at. Testnet (5042002) is filled in. Mainnet (5042) is listed with no factory and no tabs, and the page says nothing is deployed there. `?network=arc-testnet&tab=1` selects what to show.
+`src/config.ts`: for each network a chain id, RPC, explorer, the TabFactory address, and the tabs to show, each with the block it was opened at. Mainnet (5042) comes first and is what the page shows by default: the phase 5 factory, the demo tab and the expiry test tab ([docs/MAINNET.md](../../docs/MAINNET.md)). Testnet (5042002) follows. `?network=arc-testnet&tab=1` selects what to show.
 
 Arc's public RPC answers a log query for fewer than 10,000 blocks, about eighty minutes of chain. The page scans from a tab's `openBlock` in chunks of 9,000, at most 24 per load. For a tab whose life is longer than that it scans both ends and says which blocks it skipped.
 
