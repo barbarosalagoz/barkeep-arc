@@ -67,6 +67,12 @@ The seller's 0.003 USDC went to the owner, less its gas ([`0xe81928c4…f2bcc9be
 
 Read at block 22530627: both tabs, both agent addresses and the outsider hold 0. The owner holds 18,025,000,000,000 wei (0.000018025 USDC) and the seller 8,240,000,000,000 wei (0.00000824 USDC). USDC is gas on Arc with 18 decimals and moves as a token with 6, and each sweep kept back the gas the node estimated; the transfers used about 1% less. Neither remainder can pay for its own transfer, so both stay where they are.
 
+**The keys after the run** (checked 2026-09-25 on the machine that ran this phase):
+
+- **Agent keys.** Both tabs' agent keys are gone. The agent-key directory, `~/.local/state/barkeep-arc/mcp/agents`, is empty.
+- **Owner and seller keys.** `~/.local/state/barkeep-arc/keys.json` no longer exists on that machine. That file held the owner key and the seller keys (`src/owner/keyfile.ts`). Its directory was last modified at 17:45 (UTC+3) on 2026-09-24, after the sweeps above.
+- **Backups.** No other copy of any of these keys is recorded. The owner's and the seller's dust therefore stays where it is.
+
 ## Cost
 
 The phase moved 2.95565 USDC in and 2.910707 out. The difference, 0.044943 USDC, is the gas the owner and the seller paid (the factory's 0.0276 most of it) and the 0.000026265 USDC of dust above. The three payments' gas was Circle's.
