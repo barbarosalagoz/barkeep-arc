@@ -67,6 +67,13 @@ The seller's 0.003 USDC went to the owner, less its gas ([`0xe81928c4…f2bcc9be
 
 Read at block 22530627: both tabs, both agent addresses and the outsider hold 0. The owner holds 18,025,000,000,000 wei (0.000018025 USDC) and the seller 8,240,000,000,000 wei (0.00000824 USDC). USDC is gas on Arc with 18 decimals and moves as a token with 6, and each sweep kept back the gas the node estimated; the transfers used about 1% less. Neither remainder can pay for its own transfer, so both stay where they are.
 
+**The keys after the run.**
+
+- **Agent keys.** `close_tab` destroyed both tabs' agent keys. On 2026-09-25 the agent-key directory, `~/.local/state/barkeep-arc/mcp/agents`, is empty.
+- **Owner and seller keys: destroyed on 2026-09-24, in step 8.** The phase 5 plan ([#9](https://github.com/barbarosalagoz/barkeep-arc/pull/9)) said: "the mainnet keys still exist and are destroyed after approval (step 8)". In step 8, `~/.local/state/barkeep-arc/keys.json` was shredded. That file held the owner key and the seller keys (`src/owner/keyfile.ts`). A full search of the disk then found no copies.
+- **The machine agrees.** On 2026-09-25 `keys.json` does not exist, and its directory was last modified at 17:45 (UTC+3) on 2026-09-24, after the sweeps above.
+- **The dust stays.** The owner's and the seller's dust stays where it is. No key can move it.
+
 ## Cost
 
 The phase moved 2.95565 USDC in and 2.910707 out. The difference, 0.044943 USDC, is the gas the owner and the seller paid (the factory's 0.0276 most of it) and the 0.000026265 USDC of dust above. The three payments' gas was Circle's.
